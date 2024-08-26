@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import MobileNavigation from "@/components/common/mobile-navigation";
+import UserBalance from "@/components/common/balance";
+import { cn } from "@/lib/utils";
+import FlickeringBackground from "@/components/common/FlickeringBackground";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn(inter.className, "h-screen  overflow-hidden")}>
+        {/* <FlickeringBackground /> */}
+        <div className="z-10 flex flex-col h-full">
+          <div className="py-3 px-4 z-10 flex-grow overflow-scroll">
+            {children}
+          </div>
+          <MobileNavigation />
+        </div>
+      </body>
     </html>
   );
 }
