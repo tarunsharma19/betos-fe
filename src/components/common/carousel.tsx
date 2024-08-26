@@ -60,7 +60,7 @@ export function SlidingCarousel() {
       className="w-full h-auto flex-grow"
       setApi={setApi}
     >
-      <CarouselContent className=" mt-10 h-[80vh]">
+      <CarouselContent className=" mt-10 h-[70vh]">
         {teams.map((matchup, index) => (
           <CarouselItem key={index} className="pt-1 md:basis h-full">
             <div className="p-1 h-full">
