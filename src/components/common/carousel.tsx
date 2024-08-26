@@ -189,7 +189,7 @@ const MatchupCard = ({
   );
 };
 
-const TeamCard = ({
+export const TeamCard = ({
   teamName,
   teamLogo,
 }: {
