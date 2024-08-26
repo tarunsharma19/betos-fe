@@ -57,10 +57,10 @@ export function SlidingCarousel() {
         loop: true,
       }}
       orientation="vertical"
-      className="w-full"
+      className="w-full h-auto flex-grow"
       setApi={setApi}
     >
-      <CarouselContent className="my-16 h-[700px]">
+      <CarouselContent className=" mt-10 h-[80vh]">
         {teams.map((matchup, index) => (
           <CarouselItem key={index} className="pt-1 md:basis h-full">
             <div className="p-1 h-full">
@@ -207,7 +207,7 @@ export const TeamCard = ({
           src={teamLogo}
           width={100}
           height={100}
-          className="w-full h-full"
+          className="w-full h-full object-contain"
           alt={teamName}
         />
       </Button>
