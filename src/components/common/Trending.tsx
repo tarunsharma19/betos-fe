@@ -5,13 +5,13 @@ function TrendingSection() {
   return (
     <div className="">
       <h1 className="text-xl">Trending</h1>
-      <div className="w-full mt-3">
+      <div className="w-full h-36 mt-3">
         <Image
           src="/assets/trending-football.png"
           width={200}
           height={200}
           alt="Football Trending"
-          className="w-full object-cover"
+          className="w-full object-cover h-full rounded-xl"
         />
       </div>
     </div>
