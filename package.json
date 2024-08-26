@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.27.1",
+    "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@types/react-slick": "^0.23.13",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.2.0",
     "framer-motion": "^11.3.30",
     "lucide-react": "^0.435.0",
     "next": "14.2.6",

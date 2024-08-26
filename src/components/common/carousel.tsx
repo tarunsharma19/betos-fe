@@ -95,72 +95,94 @@ const MatchupCard = ({
     setSelected(value);
   };
 
+  const [amount, setAmount] = React.useState(0);
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(Number(e.target.value));
+  };
+
+  const addAmount = (value: number) => {
+    setAmount(amount + value);
+  };
+
   return (
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center">
       <CardTitle className="text-center text-sm border rounded-full px-1 py-1">
         {`${homeTeam} V/s ${awayTeam}`}
       </CardTitle>
       <CardContent className="p-4 h-full flex flex-col gap-5">
-        <div className="grid grid-cols-3 w-full ">
-          <TeamCard teamName={homeTeam} teamLogo={homeLogo} />
-          <div className="flex justify-center h-auto items-center aspect-square">
-            <Image src={"/assets/vs.png"} width={40} height={40} alt="VS" />
+        <div className="flex-grow">
+          <div className="grid grid-cols-3 w-full ">
+            <TeamCard teamName={homeTeam} teamLogo={homeLogo} />
+            <div className="flex justify-center h-auto items-center aspect-square">
+              <Image src={"/assets/vs.png"} width={40} height={40} alt="VS" />
+            </div>
+            <TeamCard teamName={awayTeam} teamLogo={awayLogo} />
           </div>
-          <TeamCard teamName={awayTeam} teamLogo={awayLogo} />
-        </div>
-        <WinningStats home={15} draw={35} away={65} />
-        <SelectSideRadioButtons
-          selectedValue={selected}
-          onChange={handleSelect}
-        />
-        <div className="grid grid-cols-6  place-items-center mt-4 gap-1">
-          <Input
-            placeholder="Enter your Amount"
-            className="w-full rounded-full  col-span-4"
-            type="number"
+          <WinningStats home={15} draw={35} away={65} />
+          <SelectSideRadioButtons
+            selectedValue={selected}
+            onChange={handleSelect}
           />
-          <div className="col-span-2">
-            <Select>
-              <SelectTrigger className=" rounded-full  w-full">
-                <SelectValue placeholder="Token" className="text-sm" />
-              </SelectTrigger>
-              <SelectContent className="w-full rounded-2xl ">
-                <SelectGroup>
-                  <SelectItem value="apt" className="rounded-2xl">
-                    <div className="flex  items-center gap-2">
-                      <Image
-                        src={"/assets/aptos-apt-logo.png"}
-                        width={20}
-                        height={20}
-                        alt="APT"
-                      />
-                      <span>APT</span>
-                    </div>
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+          <div className="grid grid-cols-6  place-items-center mt-4 gap-1">
+            <Input
+              placeholder="Enter your Amount"
+              className="w-full rounded-full  col-span-4"
+              type="number"
+              value={amount}
+              onChange={handleAmountChange}
+            />
+            <div className="col-span-2">
+              <Select>
+                <SelectTrigger className=" rounded-full  w-full">
+                  <SelectValue placeholder="Token" className="text-sm" />
+                </SelectTrigger>
+                <SelectContent className="w-full rounded-2xl ">
+                  <SelectGroup>
+                    <SelectItem value="apt" className="rounded-2xl">
+                      <div className="flex  items-center gap-2">
+                        <Image
+                          src={"/assets/aptos-apt-logo.png"}
+                          width={20}
+                          height={20}
+                          alt="APT"
+                        />
+                        <span>APT</span>
+                      </div>
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-3 mt-4">
+            <Badge
+              variant={"secondary"}
+              className="flex justify-center items-center py-1"
+              onClick={() => addAmount(1)}
+            >
+              +1
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className="flex justify-center items-center py-1"
+              onClick={() => addAmount(10)}
+            >
+              +10
+            </Badge>
+            <Badge
+              variant={"secondary"}
+              className="flex justify-center items-center py-1"
+              onClick={() => addAmount(100)}
+            >
+              +100
+            </Badge>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Badge
-            variant={"secondary"}
-            className="flex justify-center items-center py-1"
-          >
-            +1
-          </Badge>
-          <Badge
-            variant={"secondary"}
-            className="flex justify-center items-center py-1"
-          >
-            +10
-          </Badge>
-          <Badge
-            variant={"secondary"}
-            className="flex justify-center items-center py-1"
-          >
-            +100
-          </Badge>
+        <div className="">
+          <Button variant={"default"} className="w-full  rounded-xl">
+            Place Bet
+          </Button>
         </div>
       </CardContent>
     </Card>

@@ -55,7 +55,7 @@ const Icons = {
 
 const DATA = {
   navbar: [
-    { href: "#", icon: <HomeIcon />, label: "Home" },
+    { href: "/", icon: <HomeIcon />, label: "Home" },
     { href: "/slides", icon: <GalleryVertical />, label: "Scroll" },
     { href: "#", icon: <CircleUser />, label: "Profile" },
   ],
