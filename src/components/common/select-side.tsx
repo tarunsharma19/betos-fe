@@ -3,7 +3,13 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 
-export const SelectSideRadioButtons = () => {
+export const SelectSideRadioButtons = ({
+  selectedValue,
+  onChange,
+}: {
+  selectedValue: string;
+  onChange: (value: string) => void;
+}) => {
   const [selected, setSelected] = useState("");
 
   return (
@@ -14,7 +20,8 @@ export const SelectSideRadioButtons = () => {
         label="Home"
         value="home"
         selectedValue={selected}
-        onChange={setSelected}
+        onChange={onChange}
+        odds="1.5"
       />
       <RadioItem
         id="radio-draw"
@@ -23,6 +30,7 @@ export const SelectSideRadioButtons = () => {
         value="draw"
         selectedValue={selected}
         onChange={setSelected}
+        odds="2.5"
       />
       <RadioItem
         id="radio-away"
@@ -31,6 +39,7 @@ export const SelectSideRadioButtons = () => {
         value="away"
         selectedValue={selected}
         onChange={setSelected}
+        odds="3.5"
       />
     </ul>
   );
@@ -43,6 +52,7 @@ const RadioItem = ({
   value,
   selectedValue,
   onChange,
+  odds,
 }: {
   id: string;
   name: string;
@@ -50,6 +60,7 @@ const RadioItem = ({
   value: string;
   selectedValue: string;
   onChange: (value: string) => void;
+  odds: string;
 }) => {
   // Determine the color based on selection
   const isSelected = selectedValue === value;
@@ -57,29 +68,34 @@ const RadioItem = ({
     ? value === "home"
       ? "bg-[#0fc777]"
       : value === "draw"
-      ? "bg-[#fff600]"
-      : "bg-[#ff6262]"
+      ? "bg-[#eab308]"
+      : "bg-[#2a61db]"
     : "bg-zinc-200";
+
+  const buttonColors =
+    value === "home"
+      ? "bg-[#0fc777]"
+      : value === "draw"
+      ? "bg-[#eab308]"
+      : "bg-[#2a61db]";
 
   return (
     <div className="w-full">
       <div
         className={cn(
-          "h-12 w-full bg-gray-100 -mb-5 rounded-xl text-center pt-1 ",
-          isSelected ? "bg-zinc-800" : "bg-zinc-100"
+          `h-12 w-full  -mb-5 rounded-xl text-center pt-1  ${buttonColors}`
         )}
       >
-        <span
-          className={cn(
-            "font-semibold text-gray-600",
-            isSelected ? " text-white" : "text-gray-600"
-          )}
-        >
-          1.03
+        <span className={cn("font-semibold text-gray-600", "text-white")}>
+          {odds}
         </span>
       </div>
       <button
-        className={cn(`rounded-xl w-full py-3 text-white `, bgColor)}
+        className={cn(
+          `rounded-xl w-full py-3 text-white `,
+
+          isSelected ? "bg-zinc-800" : "bg-zinc-100"
+        )}
         onClick={() => onChange(value)}
       >
         <input

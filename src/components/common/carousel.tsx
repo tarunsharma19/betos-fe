@@ -9,8 +9,19 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { ProgressBar } from "./winning-stats";
+import { WinningStats } from "./winning-stats";
 import { SelectSideRadioButtons } from "./select-side";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "../ui/badge";
 
 export function SlidingCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -25,8 +36,8 @@ export function SlidingCarousel() {
     {
       home: "Liverpool",
       away: "Manchester United",
-      homeLogo: "/assets/team3.png",
-      awayLogo: "/assets/team4.png",
+      homeLogo: "/assets/team1.png",
+      awayLogo: "/assets/team2.png",
     },
     // Add more matchups here
   ];
@@ -78,17 +89,18 @@ const MatchupCard = ({
   homeLogo: string;
   awayLogo: string;
 }) => {
-  const segments = [
-    { percentage: 40, color: "[#0fc777]", label: "Home 40%" },
-    { percentage: 30, color: "[#fff100]", label: "Draw 30%" },
-    { percentage: 30, color: "[#ff6262]", label: "Away 30%" },
-  ];
+  const [selected, setSelected] = React.useState("");
+
+  const handleSelect = (value: string) => {
+    setSelected(value);
+  };
+
   return (
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center">
-      <CardTitle className="text-center text-sm border rounded-full px-3 py-1">
+      <CardTitle className="text-center text-sm border rounded-full px-1 py-1">
         {`${homeTeam} V/s ${awayTeam}`}
       </CardTitle>
-      <CardContent className="p-6 h-full">
+      <CardContent className="p-4 h-full flex flex-col gap-5">
         <div className="grid grid-cols-3 w-full ">
           <TeamCard teamName={homeTeam} teamLogo={homeLogo} />
           <div className="flex justify-center h-auto items-center aspect-square">
@@ -96,9 +108,60 @@ const MatchupCard = ({
           </div>
           <TeamCard teamName={awayTeam} teamLogo={awayLogo} />
         </div>
-        <ProgressBar segments={segments} />
-        <SelectSideRadioButtons />
-        <div className=""></div>
+        <WinningStats home={15} draw={35} away={65} />
+        <SelectSideRadioButtons
+          selectedValue={selected}
+          onChange={handleSelect}
+        />
+        <div className="grid grid-cols-6  place-items-center mt-4 gap-1">
+          <Input
+            placeholder="Enter your Amount"
+            className="w-full rounded-full  col-span-4"
+            type="number"
+          />
+          <div className="col-span-2">
+            <Select>
+              <SelectTrigger className=" rounded-full  w-full">
+                <SelectValue placeholder="Token" className="text-sm" />
+              </SelectTrigger>
+              <SelectContent className="w-full rounded-2xl ">
+                <SelectGroup>
+                  <SelectItem value="apt" className="rounded-2xl">
+                    <div className="flex  items-center gap-2">
+                      <Image
+                        src={"/assets/aptos-apt-logo.png"}
+                        width={20}
+                        height={20}
+                        alt="APT"
+                      />
+                      <span>APT</span>
+                    </div>
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <Badge
+            variant={"secondary"}
+            className="flex justify-center items-center py-1"
+          >
+            +1
+          </Badge>
+          <Badge
+            variant={"secondary"}
+            className="flex justify-center items-center py-1"
+          >
+            +10
+          </Badge>
+          <Badge
+            variant={"secondary"}
+            className="flex justify-center items-center py-1"
+          >
+            +100
+          </Badge>
+        </div>
       </CardContent>
     </Card>
   );

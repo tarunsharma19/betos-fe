@@ -1,58 +1,46 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+"use client";
 
-interface ProgressSegmentProps {
-  percentage: number;
-  color: string;
-  label: string;
-  isFirst?: boolean;
-  isLast?: boolean;
-}
-
-const ProgressSegment: React.FC<ProgressSegmentProps> = ({
-  percentage,
-  color,
-  label,
-  isFirst = false,
-  isLast = false,
-}) => {
+export function WinningStats({
+  home,
+  draw,
+  away,
+}: {
+  home: number;
+  draw: number;
+  away: number;
+}) {
   return (
-    <div
-      className={cn(
-        "h-10 flex justify-center items-center",
-        `bg-${color}`,
-        isFirst ? "rounded-l-xl" : isLast ? "rounded-r-xl" : `bg-${color}`
-      )}
-      style={{
-        width: `${percentage}%`,
-      }}
-    ></div>
-  );
-};
-
-export default ProgressSegment;
-
-interface ProgressBarProps {
-  segments: {
-    percentage: number;
-    color: string;
-    label: string;
-  }[];
-}
-
-export const ProgressBar: React.FC<ProgressBarProps> = ({ segments }) => {
-  return (
-    <div className="flex mt-10">
-      {segments.map((segment, index) => (
-        <ProgressSegment
-          key={index}
-          percentage={segment.percentage}
-          color={segment.color}
-          label={segment.label}
-          isFirst={index === 0}
-          isLast={index === segments.length - 1}
-        />
-      ))}
+    <div className="flex  mt-10">
+      <div
+        className="h-10 bg-[#0fc777] rounded-l-xl flex justify-center items-center"
+        style={{
+          width: `${home}%`,
+        }}
+      >
+        {home > 15 && (
+          <div className="text-white text-sm font-bold">{home}%</div>
+        )}
+      </div>
+      <div
+        className="h-10 bg-[#eab308] flex justify-center items-center"
+        style={{
+          width: `${draw}%`,
+        }}
+      >
+        {draw > 15 && (
+          <div className="text-white text-sm font-bold">{draw}%</div>
+        )}
+      </div>
+      <div
+        className="h-10 bg-[#2a61db] rounded-r-xl flex justify-center items-center"
+        style={{
+          width: `${away}%`,
+        }}
+      >
+        {away > 15 && (
+          <div className="text-white text-sm font-bold">{away}%</div>
+        )}
+      </div>
     </div>
   );
-};
+}
