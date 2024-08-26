@@ -60,7 +60,7 @@ export function SlidingCarousel() {
       className="w-full h-auto flex-grow"
       setApi={setApi}
     >
-      <CarouselContent className=" mt-10 h-[70svh] ">
+      <CarouselContent className="mt-2 h-[80svh] min-h-[350px] ">
         {teams.map((matchup, index) => (
           <CarouselItem key={index} className="pt-1 md:basis h-full">
             <div className="p-1 h-full">
@@ -106,7 +106,7 @@ const MatchupCard = ({
   };
 
   return (
-    <Card className="h-full border p-3 rounded-xl flex flex-col items-center">
+    <Card className="h-full border p-3 rounded-xl flex flex-col items-center py-5">
       <CardTitle className="text-center text-sm border rounded-full px-1 py-1">
         {`${homeTeam} V/s ${awayTeam}`}
       </CardTitle>

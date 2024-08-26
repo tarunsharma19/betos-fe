@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={cn(inter.className, "h-screen  overflow-hidden")}>
         {/* <FlickeringBackground /> */}
         <div className="z-10 flex flex-col h-full">
-          <div className="py-3 px-4 z-10 flex-grow overflow-scroll">
+          <div className="py-3 px-4 z-10 flex-grow overflow-hidden">
             {children}
           </div>
           <MobileNavigation />
