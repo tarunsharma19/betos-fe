@@ -110,7 +110,7 @@ const MatchupCard = ({
       <CardTitle className="text-center text-sm border rounded-full px-1 py-1">
         {`${homeTeam} V/s ${awayTeam}`}
       </CardTitle>
-      <CardContent className="p-4 h-full flex flex-col gap-5">
+      <CardContent className="p-4 h-full flex flex-col gap-3 justify-center items-center">
         <div className="flex-grow">
           <div className="grid grid-cols-3 w-full ">
             <TeamCard teamName={homeTeam} teamLogo={homeLogo} />
@@ -179,7 +179,7 @@ const MatchupCard = ({
             </Badge>
           </div>
         </div>
-        <div className="">
+        <div className="w-full">
           <Button variant={"default"} className="w-full  rounded-xl">
             Place Bet
           </Button>
@@ -201,12 +201,12 @@ export const TeamCard = ({
       <Button
         size={"icon"}
         variant={"outline"}
-        className="aspect-square p-2 w-full h-auto rounded-xl"
+        className="aspect-square p-1 w-full h-auto rounded-xl"
       >
         <Image
           src={teamLogo}
-          width={100}
-          height={100}
+          width={80}
+          height={80}
           className="w-full h-full object-contain"
           alt={teamName}
         />

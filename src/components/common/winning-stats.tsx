@@ -10,7 +10,7 @@ export function WinningStats({
   away: number;
 }) {
   return (
-    <div className="flex  mt-10">
+    <div className="flex mt-4">
       <div
         className="h-10 bg-[#0fc777] rounded-l-xl flex justify-center items-center"
         style={{
