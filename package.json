@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.27.1",
+    "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@types/react-slick": "^0.23.13",
