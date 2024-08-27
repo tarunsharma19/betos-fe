@@ -1,6 +1,6 @@
 import React from "react";
-import { unbounded } from "@/app/page";
-import { cn } from "@/lib/utils";
+
+import { cn, unbounded } from "@/lib/utils";
 import { MatchCardsHome } from "./match-cards-home";
 
 function FootballBets() {

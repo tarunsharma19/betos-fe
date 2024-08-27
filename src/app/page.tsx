@@ -16,10 +16,6 @@ const cards = [
   { content: "Card 3" },
 ];
 
-export const unbounded = Unbounded({
-  subsets: ["latin"],
-});
-
 export default function Home() {
   const navigate = useRouter();
   const { activeAccount, disconnectKeylessAccount } = useKeylessAccounts();
