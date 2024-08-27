@@ -9,20 +9,23 @@ function LoginPage() {
   const [redirectUrl, setRedirectUrl] = useState<string>("");
 
   useEffect(() => {
-    const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-    const searchParams = new URLSearchParams({
-      client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: `${window.location.origin}/callback`,
-      response_type: "id_token",
-      scope: "openid email profile",
-      nonce: ephemeralKeyPair.nonce,
-    });
-    url.search = searchParams.toString();
-    setRedirectUrl(url.toString());
+    // Ensure this runs only on the client side
+    if (typeof window !== "undefined") {
+      const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+      const searchParams = new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        redirect_uri: `${window.location.origin}/callback`,
+        response_type: "id_token",
+        scope: "openid email profile",
+        nonce: ephemeralKeyPair.nonce,
+      });
+      url.search = searchParams.toString();
+      setRedirectUrl(url.toString());
+    }
   }, [ephemeralKeyPair.nonce]);
 
   return (
-    <div className="flex items-center justify-center h-screen  px-4">
+    <div className="flex items-center justify-center h-screen px-4">
       <div>
         <h1 className="text-4xl font-bold mb-2">Welcome to Aptos</h1>
         <p className="text-lg mb-8">

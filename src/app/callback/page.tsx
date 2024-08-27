@@ -1,7 +1,7 @@
 "use client";
 import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function CallbackPage() {
   const isLoading = useRef(false);
@@ -9,13 +9,21 @@ function CallbackPage() {
     (state: any) => state.switchKeylessAccount
   );
   const navigate = useRouter();
-
-  const fragmentParams = new URLSearchParams(window.location.hash.substring(1));
-  const idToken = fragmentParams.get("id_token");
+  const [idToken, setIdToken] = useState<string | null>(null);
 
   useEffect(() => {
-    // This is a workaround to prevent firing twice due to strict mode
-    if (isLoading.current) return;
+    // Ensure this code only runs on the client side
+    if (typeof window !== "undefined") {
+      const fragmentParams = new URLSearchParams(
+        window.location.hash.substring(1)
+      );
+      const token = fragmentParams.get("id_token");
+      setIdToken(token);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoading.current || !idToken) return;
     isLoading.current = true;
 
     async function deriveAccount(idToken: string) {
@@ -29,11 +37,11 @@ function CallbackPage() {
 
     if (!idToken) {
       navigate.push("/");
-      return; // Ensure no value is returned here
+      return;
     }
 
     deriveAccount(idToken);
-  }, [idToken, isLoading, navigate, switchKeylessAccount]);
+  }, [idToken, navigate, switchKeylessAccount]);
 
   return (
     <div className="flex items-center justify-center h-screen w-screen">
