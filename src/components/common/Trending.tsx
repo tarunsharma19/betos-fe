@@ -1,10 +1,14 @@
+import { unbounded } from "@/app/page";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
 
 function TrendingSection() {
   return (
     <div className="">
-      <h1 className="text-xl">Trending</h1>
+      <h1 className={cn("text-xl font-semibold", unbounded.className)}>
+        Trending
+      </h1>
       <div className="w-full h-36 mt-3">
         <Image
           src="/assets/trending-football.png"

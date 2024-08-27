@@ -15,19 +15,6 @@ export const useAptosWallet = () => {
     isLoading,
   } = useWallet();
 
-  // Handle wallet connection
-  const handleConnect = useCallback(
-    async (walletName: WalletName) => {
-      try {
-        await connect(walletName);
-        console.log("Connected to wallet:", account?.address);
-      } catch (error: any) {
-        console.error("Failed to connect to wallet:", error.message);
-      }
-    },
-    [connect, account]
-  );
-
   // Handle wallet disconnection
   const handleDisconnect = useCallback(async () => {
     try {
@@ -76,7 +63,7 @@ export const useAptosWallet = () => {
     isLoading,
     walletName: wallet?.name,
     account,
-    handleConnect,
+    handleConnect: connect,
     handleDisconnect,
     handleChangeNetwork,
     handleSignAndSubmit,

@@ -5,6 +5,7 @@ import { MatchCards } from "@/components/common/match-cards";
 
 import TrendingSection from "@/components/common/Trending";
 import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
+import { Unbounded } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -14,6 +15,10 @@ const cards = [
   { content: "Card 2" },
   { content: "Card 3" },
 ];
+
+export const unbounded = Unbounded({
+  subsets: ["latin"],
+});
 
 export default function Home() {
   const navigate = useRouter();

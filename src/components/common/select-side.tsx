@@ -10,7 +10,12 @@ export const SelectSideRadioButtons = ({
   selectedValue: string;
   onChange: (value: string) => void;
 }) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(selectedValue);
+
+  const handleSelection = (value: string) => {
+    setSelected(value);
+    onChange(value);
+  };
 
   return (
     <ul className="flex gap-4 mt-8 justify-center">
@@ -20,7 +25,7 @@ export const SelectSideRadioButtons = ({
         label="Home"
         value="home"
         selectedValue={selected}
-        onChange={onChange}
+        onChange={handleSelection}
         odds="1.5"
       />
       <RadioItem
@@ -29,7 +34,7 @@ export const SelectSideRadioButtons = ({
         label="Draw"
         value="draw"
         selectedValue={selected}
-        onChange={setSelected}
+        onChange={handleSelection}
         odds="2.5"
       />
       <RadioItem
@@ -38,7 +43,7 @@ export const SelectSideRadioButtons = ({
         label="Away"
         value="away"
         selectedValue={selected}
-        onChange={setSelected}
+        onChange={handleSelection}
         odds="3.5"
       />
     </ul>
@@ -86,14 +91,15 @@ const RadioItem = ({
           `h-12 w-full  -mb-5 rounded-xl text-center pt-1  ${buttonColors}`
         )}
       >
-        <span className={cn("font-semibold text-gray-600", "text-white")}>
+        <span
+          className={cn("font-semibold text-xs text-gray-600", "text-white")}
+        >
           {odds}
         </span>
       </div>
       <button
         className={cn(
           `rounded-xl w-full py-3 text-white `,
-
           isSelected ? "bg-zinc-800" : "bg-zinc-100"
         )}
         onClick={() => onChange(value)}
@@ -109,7 +115,7 @@ const RadioItem = ({
         <label
           htmlFor={id}
           className={cn(
-            "block w-full text-sm text-white-600 text-center font-semibold",
+            "block w-full text-xs text-white-600 text-center font-semibold",
             isSelected ? "text-white" : "text-gray-600"
           )}
         >

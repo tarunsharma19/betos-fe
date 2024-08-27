@@ -117,7 +117,7 @@ export function DrawerDemo() {
             <Button
               className="w-full rounded-full mt-3"
               variant="default"
-              onClick={() => handleConnect("Petra" as WalletName)}
+              onClick={() => handleConnect("Petra" as WalletName<"Petra">)}
             >
               Connect Aptos Wallet
             </Button>

@@ -107,7 +107,7 @@ const MatchupCard = ({
 
   return (
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center py-5">
-      <CardTitle className="text-center text-sm border rounded-full px-1 py-1">
+      <CardTitle className="text-center text-xs border rounded-full px-1 py-1">
         {`${homeTeam} V/s ${awayTeam}`}
       </CardTitle>
       <CardContent className="p-4 h-full flex flex-col gap-3 justify-center items-center">
@@ -133,9 +133,9 @@ const MatchupCard = ({
               onChange={handleAmountChange}
             />
             <div className="col-span-2">
-              <Select>
+              <Select defaultValue="apt">
                 <SelectTrigger className=" rounded-full  w-full">
-                  <SelectValue placeholder="Token" className="text-sm" />
+                  <SelectValue placeholder="Token" className="text-xs" />
                 </SelectTrigger>
                 <SelectContent className="w-full rounded-2xl ">
                   <SelectGroup>
@@ -143,11 +143,11 @@ const MatchupCard = ({
                       <div className="flex  items-center gap-2">
                         <Image
                           src={"/assets/aptos-apt-logo.png"}
-                          width={20}
-                          height={20}
+                          width={15}
+                          height={15}
                           alt="APT"
                         />
-                        <span>APT</span>
+                        <span className="text-xs">APT</span>
                       </div>
                     </SelectItem>
                   </SelectGroup>
@@ -201,17 +201,17 @@ export const TeamCard = ({
       <Button
         size={"icon"}
         variant={"outline"}
-        className="aspect-square p-1 w-full h-auto rounded-xl"
+        className="aspect-square p-3 w-full h-auto rounded-xl"
       >
         <Image
           src={teamLogo}
-          width={80}
-          height={80}
+          width={60}
+          height={60}
           className="w-full h-full object-contain"
           alt={teamName}
         />
       </Button>
-      <h3 className="text-center font-semibold">{teamName}</h3>
+      <h3 className="text-center font-semibold text-sm mt-1">{teamName}</h3>
     </div>
   );
 };
