@@ -22,7 +22,7 @@ function UserBalance() {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="border-2 rounded-full px-4 py-1 border-yellow-400 bg-white">
+      <div className="border-2 rounded-xl px-4 py-1 border-zinc-800 bg-white">
         {
           <p className="text-xs">
             {activeAccount?.accountAddress
@@ -34,8 +34,8 @@ function UserBalance() {
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <Button
-        className="rounded-full"
-        variant={"default"}
+        className="rounded-full p-2  "
+        variant={"outline"}
         size={"icon"}
         onClick={async () => {
           setLoading(true);

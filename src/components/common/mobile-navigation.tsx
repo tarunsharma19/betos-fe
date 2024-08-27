@@ -39,9 +39,9 @@ function MobileNavigation() {
   if (!activeAccount && !connected) return <DrawerDemo />;
 
   return (
-    <div className="fixed bottom-3 mb-3 w-screen z-10">
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl px-5">
-        <div className="h-14 w-full bg-black flex aspect-square cursor-pointer items-center justify-around rounded-full ">
+    <div className="fixed bottom-3 mb-3 w-screen z-10 bg-transparent">
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl px-5 bg-transparent">
+        <div className="h-14 w-full bg-black flex aspect-square cursor-pointer items-center justify-around rounded-2xl ">
           {DATA.navbar.map((item: any, index: number) => (
             <Link key={index} href={item.href} className="text-white text-sm">
               {item.icon}
@@ -93,7 +93,7 @@ export function DrawerDemo() {
           <Button
             variant="default"
             onClick={() => setOpen(true)}
-            className="w-full rounded-full"
+            className="w-full rounded-2xl"
           >
             Get Started
           </Button>
