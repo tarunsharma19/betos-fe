@@ -31,7 +31,7 @@ function CallbackPage() {
         await switchKeylessAccount(idToken);
         navigate.push("/");
       } catch (error) {
-        navigate.push("/auth");
+        navigate.push("/");
       }
     }
 

@@ -35,7 +35,7 @@ export function SlidingCarousel() {
     },
     {
       home: "Liverpool",
-      away: "Manchester United",
+      away: "Big Blues",
       homeLogo: "/assets/team1.png",
       awayLogo: "/assets/team2.png",
     },
@@ -201,7 +201,7 @@ export const TeamCard = ({
       <Button
         size={"icon"}
         variant={"outline"}
-        className="aspect-square p-3 w-full h-auto rounded-xl"
+        className="aspect-square h-20 w-20  p-3  rounded-xl"
       >
         <Image
           src={teamLogo}

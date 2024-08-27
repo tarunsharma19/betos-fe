@@ -9,6 +9,9 @@ import { TeamCard } from "./carousel";
 import Image from "next/image";
 import { TeamCardHome } from "./team-card-home";
 import { Badge } from "../ui/badge";
+import { WinningStats } from "./winning-stats";
+import { WinningStatsHome } from "./winning-stats-home";
+import { cn, unbounded } from "@/lib/utils";
 
 export function MatchCardsHome() {
   var settings = {
@@ -45,7 +48,7 @@ export function MatchCardsHome() {
     },
     {
       home: "Liverpool",
-      away: "Manchester United",
+      away: "Big Blues",
       homeLogo: "/assets/team1.png",
       awayLogo: "/assets/team2.png",
     },
@@ -55,14 +58,14 @@ export function MatchCardsHome() {
       <Slider {...settings} className="">
         {teams.map((machup, i) => (
           <div className="px-1 " key={i}>
-            <Card className="bg-white p-6  rounded-2xl h-48 flex flex-col justify-between ">
+            <Card className="bg-white p-3  rounded-2xl h-48 flex flex-col justify-between ">
               <div className="grid grid-cols-5 w-full ">
                 <div className=""></div>
                 <TeamCardHome
                   teamName={machup.home}
                   teamLogo={machup.homeLogo}
                 />
-                <div className="flex justify-center h-auto items-center aspect-square">
+                <div className="flex justify-center  p-3 items-center h-16">
                   <Image
                     src={"/assets/vs.png"}
                     width={40}
@@ -76,29 +79,16 @@ export function MatchCardsHome() {
                   teamLogo={machup.awayLogo}
                 />
               </div>
-              <hr className="my-3" />
-              <div className="flex justify-center items-center w-full">
-                <div className="grid grid-cols-3 gap-2  flex-grow">
-                  <Badge
-                    className="border rounded-full w-full flex justify-center py-1 bg-green-500"
-                    variant={"outline"}
-                  >
-                    1.03
-                  </Badge>
-                  <Badge
-                    className="border rounded-full w-full flex justify-center py-1 bg-yellow-500"
-                    variant={"outline"}
-                  >
-                    4.03
-                  </Badge>
-                  <Badge
-                    className="border rounded-full w-full flex justify-center py-1 bg-blue-500"
-                    variant={"outline"}
-                  >
-                    2.03
-                  </Badge>
-                </div>
-              </div>
+              <hr className="my-2" />
+              <h6
+                className={cn(
+                  " text-sm mb-1 font-semibold ",
+                  unbounded.className
+                )}
+              >
+                Winning Percentage:
+              </h6>
+              <WinningStatsHome home={15} draw={35} away={65} />
             </Card>
           </div>
         ))}

@@ -13,7 +13,7 @@ export const TeamCardHome = ({
       <Button
         size={"icon"}
         variant={"outline"}
-        className="aspect-square p-3 w-full h-auto  rounded-xl"
+        className="h-16 w-16 p-3   rounded-xl"
       >
         <Image
           src={teamLogo}

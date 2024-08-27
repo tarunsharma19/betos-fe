@@ -43,7 +43,7 @@ export function MatchCardsProfile() {
     },
     {
       home: "Liverpool",
-      away: "Manchester United",
+      away: "Big Blues",
       homeLogo: "/assets/team1.png",
       awayLogo: "/assets/team2.png",
     },
