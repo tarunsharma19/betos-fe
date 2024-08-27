@@ -9,16 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aptos-connect/wallet-adapter-plugin": "^1.0.1",
     "@aptos-labs/ts-sdk": "^1.27.1",
+    "@aptos-labs/wallet-adapter-react": "^3.6.0",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@types/react-slick": "^0.23.13",
+    "aptos": "^1.21.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.2.0",
     "framer-motion": "^11.3.30",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.435.0",
     "next": "14.2.6",
     "react": "^18",
@@ -27,7 +32,10 @@
     "recharts": "^2.12.7",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.1",
+    "zod": "^3.22.4",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@types/node": "^20",
