@@ -9,7 +9,7 @@ export const TeamCardHome = ({
   teamLogo: string;
 }) => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center col-span-2">
       <Button
         size={"icon"}
         variant={"outline"}
