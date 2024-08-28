@@ -91,12 +91,17 @@ const MatchupCard = ({
   awayLogo: string;
 }) => {
   const [selected, setSelected] = React.useState("");
+  const [amount, setAmount] = React.useState(0);
+  const [reward, setReward] = React.useState(0);
+  const [odds, setOdds] = React.useState<any>({
+    "home": 10,
+    "draw": 15,
+    "away": 20,
+  });
 
   const handleSelect = (value: string) => {
     setSelected(value);
   };
-
-  const [amount, setAmount] = React.useState(0);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(e.target.value));
@@ -106,6 +111,12 @@ const MatchupCard = ({
     setAmount(amount + value);
   };
 
+  React.useEffect(()=>{
+    setReward(amount*odds[selected])
+  },[amount,selected])
+
+  
+  console.log(amount,selected,"amount selected")
   return (
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center py-5">
       <CardTitle className="text-center text-xs border rounded-full px-1 py-1">
@@ -128,7 +139,7 @@ const MatchupCard = ({
               >
                 Winning Percentage:
           </h6>
-          <WinningStats home={15} draw={35} away={65} />
+          <WinningStats home={odds.home} draw={odds.draw} away={odds.away} />
           <h6
                 className={cn(
                   " text-sm mt-4 font-semibold ",
@@ -196,8 +207,16 @@ const MatchupCard = ({
             </Badge>
           </div>
         </div>
+        <h6
+                className={cn(
+                  " text-sm text-left w-full mt-4 font-semibold ",
+                  unbounded.className
+                )}
+              >
+                {reward ? <>Est Rewards: {reward}</>:<></>}
+          </h6>
         <div className="w-full">
-          <Button variant={"default"} className="w-full  rounded-xl">
+          <Button variant={"default"} className="w-full bg-black   rounded-xl">
             Place Bet
           </Button>
         </div>

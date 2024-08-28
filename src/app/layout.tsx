@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(inter.className, "h-screen  overflow-hidden bg-zinc-100")}
+        className={cn(inter.className, "h-screen  overflow-hidden bg-zinc-100 max-w-[600px] m-auto")}
       >
         {/* <FlickeringBackground /> */}
         <WalletProvider

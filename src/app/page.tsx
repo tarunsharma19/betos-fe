@@ -27,7 +27,7 @@ export default function Home() {
   console.log("activeAccount", activeAccount);
 
   return (
-    <main className=" flex flex-col gap-10 mt-3  overflow-hidden">
+    <main className=" flex flex-col gap-10 mt-3  overflow-hidden ">
       <UserBalance />
       <TrendingSection />
       <FootballBets />

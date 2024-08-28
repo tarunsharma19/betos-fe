@@ -19,7 +19,7 @@ export function WinningStats({
   const draw_winning = Math.round(100*draw_per/total_per);
   const away_winning = Math.round(100*away_per/total_per);
 
-  console.log(home_winning,draw_winning,away_winning,"test")
+  // console.log(home_winning,draw_winning,away_winning,"test")
 
   return (
     <div className="flex mt-1 text-sm">
