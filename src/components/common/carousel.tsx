@@ -116,12 +116,12 @@ const MatchupCard = ({
   },[amount,selected])
 
   
-  console.log(amount,selected,"amount selected")
+  console.log(amount,selected,odds[selected],"amount selected")
   return (
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center py-5">
-      <CardTitle className="text-center text-xs border rounded-full px-1 py-1">
+      {/* <CardTitle className="text-center text-xs border rounded-full px-1 py-1">
         {`${homeTeam} V/s ${awayTeam}`}
-      </CardTitle>
+      </CardTitle> */}
       <CardContent className="p-4 h-full flex flex-col gap-3 justify-center items-center">
         <div className="flex-grow">
           <div className="grid grid-cols-3 w-full ">
