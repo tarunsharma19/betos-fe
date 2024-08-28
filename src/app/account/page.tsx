@@ -2,12 +2,15 @@
 
 import { MatchCardsProfile } from "@/components/common/MobileCardsProfile";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
-import { getBalance } from "@/lib/aptos";
+import { aptos, getBalance } from "@/lib/aptos";
 import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
 import { collapseAddress } from "@/lib/core/utils";
 import { cn, unbounded } from "@/lib/utils";
+import { Account, Aptos, AptosConfig, Ed25519PrivateKey } from "@aptos-labs/ts-sdk";
+import { Network } from "aptos";
 import React, { useEffect, useState } from "react";
 
 function AccountPage() {
@@ -26,6 +29,27 @@ function AccountPage() {
       setBalance(res/10**8);
     });
   },[accountAddress])
+
+  let pk = new Ed25519PrivateKey(process.env.NEXT_PUBLIC_PRIVATE_KEY!)
+  const alice = Account.fromPrivateKey({privateKey:pk})
+  const aptos = new Aptos(new AptosConfig({network: Network.TESTNET}))
+  const fundacc = async () =>{
+    console.log("called")
+    const transaction = await aptos.transferCoinTransaction({
+      sender: alice.accountAddress,
+      recipient: accountAddress,
+      amount: 1_000_000,
+    });
+    const pendingTxn = await aptos.signAndSubmitTransaction({
+      signer: alice,
+      transaction,
+    });
+    
+    getBalance(accountAddress).then((res)=>{
+      setBalance(res/10**8);
+    });
+    console.log("sent to", accountAddress ,"\n",pendingTxn)
+  }
 
   return (
     <div className="h-full">
@@ -51,6 +75,7 @@ function AccountPage() {
         <h1 className="text-xl font-bold">Recent Bets</h1>
       </div>
       <MatchCardsProfile />
+      <Button className="mt-8" onClick={fundacc}> get fund</Button>
     </div>
   );
 }
