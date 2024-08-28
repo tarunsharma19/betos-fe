@@ -1,19 +1,51 @@
+"use client";
+
 import { MatchCardsProfile } from "@/components/common/MobileCardsProfile";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import React from "react";
+import { useAptosWallet } from "@/hooks/use-aptos-wallet";
+import { getBalance } from "@/lib/aptos";
+import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
+import { collapseAddress } from "@/lib/core/utils";
+import { cn, unbounded } from "@/lib/utils";
+import React, { useEffect, useState } from "react";
 
 function AccountPage() {
+  const { activeAccount} = useKeylessAccounts();
+  const { account } = useAptosWallet();
+  const [accountAddress, setAccountAddress] = useState<any>();
+  const [balance, setBalance] = useState<any>();
+
+  useEffect(()=>{
+    if (activeAccount?.accountAddress) {setAccountAddress(activeAccount?.accountAddress)}
+    else if (account?.address) {setAccountAddress(account?.address)}
+  },[activeAccount,account])
+
+  useEffect(()=>{
+    accountAddress && getBalance(accountAddress).then((res)=>{
+      setBalance(res/10**8);
+    });
+  },[accountAddress])
+
   return (
     <div className="h-full">
       <h1 className="text-xl font-bold">My Account</h1>
-      <Card className="h-40 p-2 mt-3 flex justify-center flex-col gap-3 items-center">
-        <h1 className="text-xl font-bold">12.012 APT</h1>
-        <Badge>
-          <p className="text-ellipsis overflow-hidden w-40 ">
-            0xb8CE9ab6943e0eCED004cDe8e3bBed6568B2Fa01
-          </p>
-        </Badge>
+      <Card className="h-40 p-4 mt-2 flex flex-col gap-3  rounded-2xl">
+        
+          <h2
+                className={cn(
+                  " text-xs  font-semibold ",
+                  unbounded.className
+                )}
+              >
+               {activeAccount?.accountAddress
+                ? collapseAddress(activeAccount.accountAddress.toString())
+                :account?.address ? collapseAddress(account?.address): 
+                "Not Connected"}
+          </h2>
+        <h1 className="text-xl font-bold">{balance} APT</h1>
+        {/* <Badge> */}
+        {/* </Badge> */}
       </Card>
       <div className="mt-4 mb-4">
         <h1 className="text-xl font-bold">Recent Bets</h1>
