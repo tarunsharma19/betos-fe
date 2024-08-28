@@ -94,9 +94,9 @@ const MatchupCard = ({
   const [amount, setAmount] = React.useState(0);
   const [reward, setReward] = React.useState(0);
   const [odds, setOdds] = React.useState<any>({
-    "home": 10,
-    "draw": 15,
-    "away": 20,
+    "home": 1.0,
+    "draw": 1.5,
+    "away": 2.0,
   });
 
   const handleSelect = (value: string) => {
@@ -149,6 +149,7 @@ const MatchupCard = ({
                 Odds:
           </h6>
           <SelectSideRadioButtons
+            odds={odds}
             selectedValue={selected}
             onChange={handleSelect}
           />

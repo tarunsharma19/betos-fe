@@ -4,9 +4,11 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 
 export const SelectSideRadioButtons = ({
+  odds,
   selectedValue,
   onChange,
 }: {
+  odds: any;
   selectedValue: string;
   onChange: (value: string) => void;
 }) => {
@@ -26,7 +28,7 @@ export const SelectSideRadioButtons = ({
         value="home"
         selectedValue={selected}
         onChange={handleSelection}
-        odds="1.5"
+        odds={odds.home}
       />
       <RadioItem
         id="radio-draw"
@@ -35,7 +37,8 @@ export const SelectSideRadioButtons = ({
         value="draw"
         selectedValue={selected}
         onChange={handleSelection}
-        odds="2.5"
+        odds={odds.draw}
+
       />
       <RadioItem
         id="radio-away"
@@ -44,7 +47,7 @@ export const SelectSideRadioButtons = ({
         value="away"
         selectedValue={selected}
         onChange={handleSelection}
-        odds="3.5"
+        odds={odds.away}
       />
     </ul>
   );
