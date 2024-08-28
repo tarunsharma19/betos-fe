@@ -5,6 +5,7 @@ import MobileNavigation from "@/components/common/mobile-navigation";
 
 import { cn } from "@/lib/utils";
 import { WalletProvider } from "@/components/common/wallet.provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(inter.className, "h-screen  overflow-hidden bg-zinc-100 max-w-[600px] m-auto")}
+        className={cn(
+          inter.className,
+          "h-screen  overflow-hidden bg-zinc-100 max-w-[600px] m-auto"
+        )}
       >
         {/* <FlickeringBackground /> */}
         <WalletProvider
@@ -33,6 +37,7 @@ export default function RootLayout({
             </div>
             <MobileNavigation />
           </div>
+          <Toaster />
         </WalletProvider>
       </body>
     </html>

@@ -1,20 +1,16 @@
-"use client";
-
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../ui/card";
-import { TeamCard } from "./carousel";
 import Image from "next/image";
 import { TeamCardHome } from "./team-card-home";
-import { Badge } from "../ui/badge";
-import { WinningStats } from "./winning-stats";
 import { WinningStatsHome } from "./winning-stats-home";
 import { cn, unbounded } from "@/lib/utils";
+import { IReelFixture } from "./carousel";
 
 export function MatchCardsHome() {
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -22,67 +18,66 @@ export function MatchCardsHome() {
     slidesToScroll: 1,
     arrows: false,
     centerPadding: "60px",
-    gap: 10,
     responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          centerPadding: "40px",
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          centerPadding: "20px",
-        },
-      },
+      { breakpoint: 768, settings: { centerPadding: "40px" } },
+      { breakpoint: 480, settings: { centerPadding: "20px" } },
     ],
   };
 
-  const teams = [
-    {
-      home: "Chelsea",
-      away: "Arsenal",
-      homeLogo: "/assets/team1.png",
-      awayLogo: "/assets/team2.png",
-    },
-    {
-      home: "Liverpool",
-      away: "Big Blues",
-      homeLogo: "/assets/team1.png",
-      awayLogo: "/assets/team2.png",
-    },
-  ];
+  const [reels, setReels] = React.useState<IReelFixture[] | []>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  const fetchReels = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("https://data-server-aptos.onrender.com/reels");
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setReels(data.data);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchReels();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
-    <div className="">
-      <Slider {...settings} className="">
-        {teams.map((machup, i) => (
-          <div className="px-1 " key={i}>
-            <Card className="bg-white p-3  rounded-2xl h-48 flex flex-col justify-between ">
-              <div className="grid grid-cols-5 w-full ">
-                <div className=""></div>
+    <div>
+      <Slider {...settings}>
+        {reels.map((matchup, index) => (
+          <div className="px-1" key={index}>
+            <Card className="bg-white p-3 rounded-2xl h-48 flex flex-col justify-between">
+              <div className="grid grid-cols-5 w-full">
                 <TeamCardHome
-                  teamName={machup.home}
-                  teamLogo={machup.homeLogo}
+                  teamName={matchup.teams.home.name}
+                  teamLogo={matchup.teams.home.logo}
                 />
-                <div className="flex justify-center  p-3 items-center h-16">
+                <div className="flex justify-center p-3 items-center h-16">
                   <Image
                     src={"/assets/vs.png"}
                     width={40}
                     height={40}
-                    className="h-full w-full object-contain"
                     alt="VS"
                   />
                 </div>
                 <TeamCardHome
-                  teamName={machup.away}
-                  teamLogo={machup.awayLogo}
+                  teamName={matchup.teams.away.name}
+                  teamLogo={matchup.teams.away.logo}
                 />
               </div>
               <hr className="my-2" />
               <h6
                 className={cn(
-                  " text-sm mb-1 font-semibold ",
+                  "text-sm mb-1 font-semibold",
                   unbounded.className
                 )}
               >
