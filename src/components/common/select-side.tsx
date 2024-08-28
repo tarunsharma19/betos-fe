@@ -38,7 +38,6 @@ export const SelectSideRadioButtons = ({
         selectedValue={selected}
         onChange={handleSelection}
         odds={odds.draw}
-
       />
       <RadioItem
         id="radio-away"

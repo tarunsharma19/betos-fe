@@ -23,6 +23,54 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "../ui/badge";
 import { cn, unbounded } from "@/lib/utils";
+import { fetchReels } from "@/action";
+
+export interface IOddValue {
+  value: string;
+  odd: number;
+  _id: string;
+}
+
+export interface IBet {
+  id: number;
+  name: string;
+  values: IOddValue[];
+  _id: string;
+}
+
+export interface IOdds {
+  bets: IBet[];
+}
+
+export interface ITeam {
+  name: string;
+  logo: string;
+}
+
+export interface ITeams {
+  home: ITeam;
+  away: ITeam;
+}
+
+export interface IFixture {
+  id: number;
+  timezone: string;
+  date: string;
+}
+
+export interface ILeague {
+  name: string;
+  country: string;
+  logo: string;
+}
+
+export interface IReelFixture {
+  fixture: IFixture;
+  league: ILeague;
+  teams: ITeams;
+  odds: IOdds;
+  _id: string;
+}
 
 export function SlidingCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -42,14 +90,32 @@ export function SlidingCarousel() {
     },
     // Add more matchups here
   ];
+  const [reels, setReels] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  const fetchReels = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("https://data-server-aptos.onrender.com/reels");
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setReels(data.data);
+    } catch (e: any) {
+      setError(e.message);
+      setReels([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   React.useEffect(() => {
-    if (!api) return;
+    fetchReels();
+  }, []);
 
-    // const interval = setInterval(() => {
-    //   api.scrollNext();
-    // }, 2000); // Scrolls every 2 seconds
-  }, [api]);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Carousel
@@ -62,18 +128,20 @@ export function SlidingCarousel() {
       setApi={setApi}
     >
       <CarouselContent className="mt-2 h-[80svh] min-h-[350px] ">
-        {teams.map((matchup, index) => (
-          <CarouselItem key={index} className="pt-1 md:basis h-full">
-            <div className="p-1 h-full">
-              <MatchupCard
-                homeTeam={matchup.home}
-                awayTeam={matchup.away}
-                homeLogo={matchup.homeLogo}
-                awayLogo={matchup.awayLogo}
-              />
-            </div>
-          </CarouselItem>
-        ))}
+        {reels &&
+          reels.map((reel: IReelFixture, index: any) => (
+            <CarouselItem key={index} className="pt-1 md:basis h-full">
+              <div className="p-1 h-full">
+                <MatchupCard
+                  homeTeam={reel.teams.home.name}
+                  awayTeam={reel.teams.away.name}
+                  homeLogo={reel.teams.home.logo}
+                  awayLogo={reel.teams.away.logo}
+                  reel={reel}
+                />
+              </div>
+            </CarouselItem>
+          ))}
       </CarouselContent>
     </Carousel>
   );
@@ -84,20 +152,30 @@ const MatchupCard = ({
   awayTeam,
   homeLogo,
   awayLogo,
+  reel,
 }: {
   homeTeam: string;
   awayTeam: string;
   homeLogo: string;
   awayLogo: string;
+  reel: IReelFixture;
 }) => {
-  const [selected, setSelected] = React.useState("");
-  const [amount, setAmount] = React.useState(0);
-  const [reward, setReward] = React.useState(0);
-  const [odds, setOdds] = React.useState<any>({
-    "home": 1.0,
-    "draw": 1.5,
-    "away": 2.0,
-  });
+  const [selected, setSelected] = React.useState<string>("");
+  const [amount, setAmount] = React.useState<number>(0);
+  const [reward, setReward] = React.useState<number>(0);
+
+  // Extract odds values
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const oddsValues = reel?.odds.bets[0]?.values || [];
+  // Memoize the oddsForRadio object to prevent unnecessary recalculations
+  const oddsForRadio: any = React.useMemo(() => {
+    return {
+      home: oddsValues.find((odd) => odd.value === "Home")?.odd || 0,
+      draw: oddsValues.find((odd) => odd.value === "Draw")?.odd || 0,
+      away: oddsValues.find((odd) => odd.value === "Away")?.odd || 0,
+    };
+  }, [oddsValues]);
 
   const handleSelect = (value: string) => {
     setSelected(value);
@@ -108,20 +186,20 @@ const MatchupCard = ({
   };
 
   const addAmount = (value: number) => {
-    setAmount(amount + value);
+    setAmount((prevAmount) => prevAmount + value);
   };
 
-  React.useEffect(()=>{
-    setReward(amount*odds[selected])
-  },[amount,selected])
+  // Calculate reward whenever selected or amount changes
+  React.useEffect(() => {
+    if (selected && amount > 0) {
+      setReward(amount * oddsForRadio[selected]);
+    } else {
+      setReward(0);
+    }
+  }, [amount, selected, oddsForRadio]);
 
-  
-  console.log(amount,selected,odds[selected],"amount selected")
   return (
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center py-5">
-      {/* <CardTitle className="text-center text-xs border rounded-full px-1 py-1">
-        {`${homeTeam} V/s ${awayTeam}`}
-      </CardTitle> */}
       <CardContent className="p-4 h-full flex flex-col gap-3 justify-center items-center">
         <div className="flex-grow">
           <div className="grid grid-cols-3 w-full ">
@@ -132,24 +210,22 @@ const MatchupCard = ({
             <TeamCard teamName={awayTeam} teamLogo={awayLogo} />
           </div>
           <h6
-                className={cn(
-                  " text-sm mt-4 font-semibold ",
-                  unbounded.className
-                )}
-              >
-                Winning Percentage:
+            className={cn(" text-sm mt-4 font-semibold ", unbounded.className)}
+          >
+            Winning Percentage:
           </h6>
-          <WinningStats home={odds.home} draw={odds.draw} away={odds.away} />
+          <WinningStats
+            home={oddsForRadio.home}
+            draw={oddsForRadio.draw}
+            away={oddsForRadio.away}
+          />
           <h6
-                className={cn(
-                  " text-sm mt-4 font-semibold ",
-                  unbounded.className
-                )}
-              >
-                Odds:
+            className={cn(" text-sm mt-4 font-semibold ", unbounded.className)}
+          >
+            Odds:
           </h6>
           <SelectSideRadioButtons
-            odds={odds}
+            odds={oddsForRadio}
             selectedValue={selected}
             onChange={handleSelect}
           />
@@ -209,15 +285,15 @@ const MatchupCard = ({
           </div>
         </div>
         <h6
-                className={cn(
-                  " text-sm text-left w-full mt-4 font-semibold ",
-                  unbounded.className
-                )}
-              >
-                {reward ? <>Est Rewards: {reward}</>:<></>}
-          </h6>
+          className={cn(
+            " text-sm text-left w-full mt-4 font-semibold ",
+            unbounded.className
+          )}
+        >
+          {reward > 0 ? <>Est Rewards: {reward.toFixed(2)}</> : <></>}
+        </h6>
         <div className="w-full">
-          <Button variant={"default"} className="w-full bg-black   rounded-xl">
+          <Button variant={"default"} className="w-full bg-black rounded-xl">
             Place Bet
           </Button>
         </div>
@@ -248,7 +324,7 @@ export const TeamCard = ({
           alt={teamName}
         />
       </Button>
-      <h3 className="text-center font-semibold text-sm mt-1">{teamName}</h3>
+      <h3 className="text-center font-semibold text-xs mt-1">{teamName}</h3>
     </div>
   );
 };
