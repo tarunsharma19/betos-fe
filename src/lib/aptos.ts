@@ -3,7 +3,7 @@ import { Network } from "aptos";
 
 
 const APTOS_NETWORK: Network = Network.TESTNET;
-const config = new AptosConfig({ indexer: "https://api.testnet.aptoslabs.com/v1/graphql" });
+const config = new AptosConfig({ fullnode: "https://rpc.ankr.com/http/aptos_testnet/v1" });
 export const aptos = new Aptos(config);
 
 
