@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "../ui/badge";
+import { cn, unbounded } from "@/lib/utils";
 
 export function SlidingCarousel() {
   const [api, setApi] = React.useState<CarouselApi>();
@@ -119,7 +120,23 @@ const MatchupCard = ({
             </div>
             <TeamCard teamName={awayTeam} teamLogo={awayLogo} />
           </div>
+          <h6
+                className={cn(
+                  " text-sm mt-4 font-semibold ",
+                  unbounded.className
+                )}
+              >
+                Winning Percentage:
+          </h6>
           <WinningStats home={15} draw={35} away={65} />
+          <h6
+                className={cn(
+                  " text-sm mt-4 font-semibold ",
+                  unbounded.className
+                )}
+              >
+                Odds:
+          </h6>
           <SelectSideRadioButtons
             selectedValue={selected}
             onChange={handleSelect}

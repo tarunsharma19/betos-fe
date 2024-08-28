@@ -18,7 +18,7 @@ export const SelectSideRadioButtons = ({
   };
 
   return (
-    <ul className="flex gap-4 mt-8 justify-center">
+    <ul className="flex gap-4 mt-1 justify-center">
       <RadioItem
         id="radio-home"
         name="side"
@@ -88,13 +88,13 @@ const RadioItem = ({
     <div className="w-full">
       <div
         className={cn(
-          `h-12 w-full  -mb-5 rounded-xl text-center pt-1  ${buttonColors}`
+          `h-12 w-full  -mb-6 rounded-xl text-center   ${buttonColors}`
         )}
       >
         <span
           className={cn("font-semibold text-xs text-gray-600", "text-white")}
         >
-          {odds}
+          {label}
         </span>
       </div>
       <button
@@ -119,7 +119,7 @@ const RadioItem = ({
             isSelected ? "text-white" : "text-gray-600"
           )}
         >
-          {label}
+          {odds}
         </label>
       </button>
     </div>
