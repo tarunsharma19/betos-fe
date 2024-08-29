@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "../ui/badge";
-import { cn, unbounded } from "@/lib/utils";
+import { cn, formatUtcDate, unbounded } from "@/lib/utils";
 import { useLongPress } from "@uidotdev/usehooks";
 import { toast } from "sonner";
 import { useMotionValue, useTransform, motion } from "framer-motion";
@@ -171,6 +171,12 @@ export const MatchupCard = ({
     <Card className="h-full border p-3 rounded-xl flex flex-col items-center py-5">
       <CardContent className="p-4 h-full flex flex-col gap-3 justify-center items-center">
         <div className="flex-grow">
+          {/* date of fixture */}
+          <div className="flex justify-center">
+            <Badge className="text-center" variant={"secondary"}>
+              {formatUtcDate(reel.fixture.date)}
+            </Badge>
+          </div>
           <div className="grid grid-cols-3 w-full">
             <TeamCard teamName={homeTeam} teamLogo={homeLogo} />
             <div className="flex justify-center h-auto items-center aspect-square">

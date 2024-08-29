@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -11,7 +11,7 @@ import { formatUtcDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 
 export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -36,24 +36,6 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
     ],
   };
 
-  const teams = [
-    {
-      home: "Chelsea",
-      away: "Arsenal",
-      homeLogo: "/assets/team1.png",
-      awayLogo: "/assets/team2.png",
-    },
-    {
-      home: "Liverpool",
-      away: "Big Blues",
-      homeLogo: "/assets/team1.png",
-      awayLogo: "/assets/team2.png",
-    },
-    // Add more matchups here
-  ];
-
-  const [fixtureData, setFixtureData] = React.useState<any[]>([]);
-
   const formatOutcome = (outcome: number) => {
     switch (outcome) {
       case 0:
@@ -67,55 +49,46 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
     }
   };
 
-  useEffect(() => {
+  const groupedBets = useMemo(() => {
     const filteredData = combinedData.filter(
       (data: any) => Object.keys(data.fixtureData).length !== 0
     );
 
-    function groupBetsByFixtureAndOutcome(bets: any) {
-      const groupedBets: any = {};
+    const grouped = filteredData.reduce((acc: any, bet: any) => {
+      const key = `${bet.fixture_id}-${bet.outcome}`;
+      if (!acc[key]) {
+        acc[key] = {
+          fixture_id: bet.fixture_id,
+          odds: bet.odds,
+          outcome: bet.outcome,
+          user: bet.user,
+          wager: parseInt(bet.wager, 10),
+          fixtureData: bet.fixtureData,
+        };
+      } else {
+        acc[key].wager += parseInt(bet.wager, 10);
+      }
+      return acc;
+    }, {});
 
-      bets.forEach((bet: any) => {
-        const key = `${bet.fixture_id}-${bet.outcome}`;
-
-        if (!groupedBets[key]) {
-          groupedBets[key] = {
-            fixture_id: bet.fixture_id,
-            odds: bet.odds,
-            outcome: bet.outcome,
-            user: bet.user,
-            wager: parseInt(bet.wager, 10),
-            fixtureData: bet.fixtureData,
-          };
-        } else {
-          groupedBets[key].wager += parseInt(bet.wager, 10);
-        }
-      });
-
-      return Object.values(groupedBets);
-    }
-
-    const groupedBets = groupBetsByFixtureAndOutcome(filteredData);
-    console.log("groupedBets", groupedBets);
-    setFixtureData(groupedBets);
+    return Object.values(grouped);
   }, [combinedData]);
 
   return (
     <div className="">
-      {fixtureData.length === 1 &&
-        fixtureData?.map((machup: any, i: any) => (
+      {groupedBets.length === 1 ? (
+        groupedBets.map((matchup: any, i: number) => (
           <div className="px-1" key={i}>
-            <Card className="bg-white p-6  rounded-2xl h-52">
-              {/* {JSON.stringify(machup.fixtureData.teams)} */}
-              <div className=" flex justify-center mb-2">
-                <Badge className="text-center " variant={"secondary"}>
-                  {formatUtcDate(machup.fixtureData?.fixture?.date)}
+            <Card className="bg-white p-6 rounded-2xl h-52">
+              <div className="flex justify-center mb-2">
+                <Badge className="text-center" variant={"secondary"}>
+                  {formatUtcDate(matchup.fixtureData?.fixture?.date)}
                 </Badge>
               </div>
-              <div className="grid grid-cols-3 w-full ">
+              <div className="grid grid-cols-3 w-full">
                 <TeamCard
-                  teamName={machup.fixtureData?.teams?.home.name}
-                  teamLogo={machup.fixtureData?.teams?.home.logo}
+                  teamName={matchup.fixtureData?.teams?.home.name}
+                  teamLogo={matchup.fixtureData?.teams?.home.logo}
                 />
                 <div className="flex justify-center h-auto items-center aspect-square">
                   <Image
@@ -126,31 +99,30 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
                   />
                 </div>
                 <TeamCard
-                  teamName={machup.fixtureData?.teams?.away.name}
-                  teamLogo={machup.fixtureData?.teams?.away.logo}
+                  teamName={matchup.fixtureData?.teams?.away.name}
+                  teamLogo={matchup.fixtureData?.teams?.away.logo}
                 />
               </div>
               <h2 className="text-center">
-                Betted on {formatOutcome(machup.outcome)}
+                Betted on {formatOutcome(matchup.outcome)}
               </h2>
             </Card>
           </div>
-        ))}
-      <Slider {...settings} className="">
-        {fixtureData.length > 1 &&
-          fixtureData?.map((machup: any, i: any) => (
+        ))
+      ) : (
+        <Slider {...settings} className="">
+          {groupedBets.map((matchup: any, i: number) => (
             <div className="px-1" key={i}>
-              <Card className="bg-white p-6  rounded-2xl h-52">
-                {/* {JSON.stringify(machup.fixtureData.teams)} */}
-                <div className=" flex justify-center mb-2">
-                  <Badge className="text-center " variant={"secondary"}>
-                    {formatUtcDate(machup.fixtureData?.fixture?.date)}
+              <Card className="bg-white p-6 rounded-2xl h-56">
+                <div className="flex justify-center mb-2">
+                  <Badge className="text-center" variant={"secondary"}>
+                    {formatUtcDate(matchup.fixtureData?.fixture?.date)}
                   </Badge>
                 </div>
-                <div className="grid grid-cols-3 w-full ">
+                <div className="grid grid-cols-3 w-full">
                   <TeamCard
-                    teamName={machup.fixtureData?.teams?.home.name}
-                    teamLogo={machup.fixtureData?.teams?.home.logo}
+                    teamName={matchup.fixtureData?.teams?.home.name}
+                    teamLogo={matchup.fixtureData?.teams?.home.logo}
                   />
                   <div className="flex justify-center h-auto items-center aspect-square">
                     <Image
@@ -161,17 +133,19 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
                     />
                   </div>
                   <TeamCard
-                    teamName={machup.fixtureData?.teams?.away.name}
-                    teamLogo={machup.fixtureData?.teams?.away.logo}
+                    teamName={matchup.fixtureData?.teams?.away.name}
+                    teamLogo={matchup.fixtureData?.teams?.away.logo}
                   />
                 </div>
-                <h2 className="text-center">
-                  Betted on {formatOutcome(machup.outcome)}
+                <h2 className="text-center mt-2">
+                  Betted on {formatOutcome(matchup.outcome)} with{" "}
+                  {matchup.wager / 10 ** 8} APT
                 </h2>
               </Card>
             </div>
           ))}
-      </Slider>
+        </Slider>
+      )}
     </div>
   );
 }
