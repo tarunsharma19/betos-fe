@@ -19,19 +19,19 @@ function UserBalance() {
 
   return (
     <div className="flex justify-between items-center">
-      <div className="h-8">
+      <div className="h-10">
         <Image
           src="/assets/brand-assets/brandlogo.png"
           alt="Brand"
           className="w-full h-full"
-          width={100}
+          width={150}
           height={100}
         />
       </div>
 
       {((!isLoading && account) || activeAccount) && (
         <div className="flex items-center  gap-2">
-          <div className="border-2 rounded-xl px-4 py-1 border-zinc-800 bg-white">
+          <div className="flex items-center border-2 rounded-xl px-4 h-8 py-1 border-zinc-800 bg-white">
             {
               <p className="text-xs">
                 {activeAccount?.accountAddress
@@ -42,7 +42,7 @@ function UserBalance() {
           </div>
 
           <Button
-            className="rounded-full p-2  "
+            className="rounded-full p-2  h-[32px] w-[32px] border-zinc-800 border-2"
             variant={"outline"}
             size={"icon"}
             onClick={async () => {

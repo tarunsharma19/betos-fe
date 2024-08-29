@@ -54,7 +54,11 @@ function AccountPage() {
         <h2 className={cn("text-xs font-semibold", unbounded.className)}>
           {accountAddress ? collapseAddress(accountAddress) : "Not Connected"}
         </h2>
-        <h1 className="text-xl font-bold">{balance} APT</h1>
+        <h1 className="text-xl font-bold">{balance && balance+" APT"} </h1>
+        <h2 className={cn("text-xs font-semibold", unbounded.className)}>
+          Total bets
+        </h2>
+        <h1 className="text-xl font-bold">10</h1>
       </Card>
       <div className="mt-4 mb-4">
         <h1 className={cn("text-xl font-bold mt-3", unbounded.className)}>
