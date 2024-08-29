@@ -30,36 +30,51 @@ import useEphemeralKeyPair from "@/lib/core/useEphemeralKeyPair";
 import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
+import { usePathname } from "next/navigation";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
-  const { connected, handleConnect, walletName, account } = useAptosWallet();
+  const { connected, handleConnect, walletName, account, isLoading } =
+    useAptosWallet();
   console.log("activeAccount", account);
 
-  if (!activeAccount && !connected) return <DrawerDemo />;
+  const location = usePathname();
+
+  if (!activeAccount && !connected && location !== "/callback")
+    return <DrawerDemo isLoading={isLoading} />;
 
   return (
-    <div className="fixed bottom-3 mb-3 w-screen z-10 bg-transparent max-w-[600px]">
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent  px-5 bg-transparent">
-        <div className="h-14 w-full bg-black flex aspect-square cursor-pointer items-center justify-around rounded-2xl ">
-          {DATA.navbar.map((item: any, index: number) => (
-            <Link key={index} href={item.href} className="text-white text-sm">
-              {item.icon}
-            </Link>
-          ))}
+    <div className="">
+      {location !== "/callback" && (
+        <div className="fixed bottom-3 mb-3 w-screen z-10 bg-transparent max-w-[600px]">
+          <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent  px-5 bg-transparent">
+            <div className="h-14 w-full bg-black flex aspect-square cursor-pointer items-center justify-around rounded-2xl ">
+              {DATA.navbar.map((item: any, index: number) => (
+                <Link
+                  key={index}
+                  href={item.href}
+                  className="text-white text-sm"
+                >
+                  {item.icon}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
 
 export default MobileNavigation;
 
-export function DrawerDemo() {
+export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
   const [open, setOpen] = useState(false);
   const ephemeralKeyPair = useEphemeralKeyPair();
   const [redirectUrl, setRedirectUrl] = useState<string>("");
   const { handleConnect } = useAptosWallet();
+
+  const location = usePathname();
 
   useEffect(() => {
     const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
@@ -84,7 +99,13 @@ export function DrawerDemo() {
     if (open && redirectUrl) {
       setOpen(false);
     }
-  }, [open, redirectUrl]);
+
+    if (location === "/callback") {
+      setOpen(false);
+    }
+  }, [location, open, redirectUrl]);
+
+  console.log(isLoading, "isLoading");
 
   return (
     <Drawer open={open} onClose={() => setOpen(false)}>
@@ -101,27 +122,31 @@ export function DrawerDemo() {
       </DrawerTrigger>
       <DrawerContent>
         <div className="flex items-center justify-center h-56 px-4">
-          <div>
-            <p className="text-lg mb-8 text-center">
-              Get started with Betos by connecting your wallet
-            </p>
-            {redirectUrl && (
-              <Link
-                href={redirectUrl}
-                className="flex justify-center items-center border px-8 py-2 hover:bg-gray-100 hover:shadow-sm active:bg-gray-50 active:scale-95 transition-all rounded-full"
+          {isLoading === true ? (
+            <div>Your account details are being fetched!</div>
+          ) : (
+            <div>
+              <p className="text-lg mb-8 text-center">
+                Get started with Betos by connecting your wallet
+              </p>
+              {redirectUrl && (
+                <Link
+                  href={redirectUrl}
+                  className="flex justify-center items-center border px-8 py-2 hover:bg-gray-100 hover:shadow-sm active:bg-gray-50 active:scale-95 transition-all rounded-full"
+                >
+                  <GoogleLogo />
+                  Sign in with Google
+                </Link>
+              )}
+              <Button
+                className="w-full rounded-full mt-3"
+                variant="default"
+                onClick={() => handleConnect("Petra" as WalletName<"Petra">)}
               >
-                <GoogleLogo />
-                Sign in with Google
-              </Link>
-            )}
-            <Button
-              className="w-full rounded-full mt-3"
-              variant="default"
-              onClick={() => handleConnect("Petra" as WalletName<"Petra">)}
-            >
-              Connect Aptos Wallet
-            </Button>
-          </div>
+                Connect Aptos Wallet
+              </Button>
+            </div>
+          )}
         </div>
       </DrawerContent>
     </Drawer>

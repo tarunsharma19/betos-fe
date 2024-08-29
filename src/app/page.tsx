@@ -14,6 +14,7 @@ import { Unbounded } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const cards = [
   { content: "Card 1" },
@@ -23,27 +24,33 @@ const cards = [
 
 export default function Home() {
   const navigate = useRouter();
-  const { activeAccount} = useKeylessAccounts();
+  const { activeAccount } = useKeylessAccounts();
   const { account } = useAptosWallet();
   const [accountAddress, setAccountAddress] = useState<any>();
   const [balance, setBalance] = useState<any>();
 
-  useEffect(()=>{
-    if (activeAccount?.accountAddress) {setAccountAddress(activeAccount?.accountAddress)}
-    else if (account?.address) {setAccountAddress(account?.address)}
-  },[activeAccount,account])
+  const [loading, setLoading] = useState(false);
 
-  
+  useEffect(() => {
+    if (activeAccount?.accountAddress) {
+      setAccountAddress(activeAccount?.accountAddress);
+    } else if (account?.address) {
+      setAccountAddress(account?.address);
+    }
+  }, [activeAccount, account]);
+
   useEffect(() => {
     if (!activeAccount) navigate.push("/");
   }, [activeAccount, navigate]);
 
   console.log("activeAccount", activeAccount);
 
-  let pk = new Ed25519PrivateKey(process.env.NEXT_PUBLIC_PRIVATE_KEY!)
-  const alice = Account.fromPrivateKey({privateKey:pk})
-  const fundacc = async () =>{
-    console.log("called")
+  let pk = new Ed25519PrivateKey(process.env.NEXT_PUBLIC_PRIVATE_KEY!);
+  const alice = Account.fromPrivateKey({ privateKey: pk });
+
+  const fundacc = async () => {
+    setLoading(true);
+    console.log("called");
     const transaction = await aptos.transferCoinTransaction({
       sender: alice.accountAddress,
       recipient: accountAddress,
@@ -53,12 +60,18 @@ export default function Home() {
       signer: alice,
       transaction,
     });
-    
-    getBalance(accountAddress).then((res)=>{
-      setBalance(res/10**8);
+
+    getBalance(accountAddress).then((res) => {
+      setBalance(res / 10 ** 8);
     });
-    console.log("sent to", accountAddress ,"\n",pendingTxn)
-  }
+
+    setLoading(false);
+
+    toast.success("Funds Claimed Successfully", {
+      description: "You have successfully claimed 1$ APT",
+    });
+    console.log("sent to", accountAddress, "\n", pendingTxn);
+  };
 
   return (
     <main className=" flex flex-col gap-10 mt-3  overflow-hidden ">
@@ -67,16 +80,16 @@ export default function Home() {
         <h1 className={cn("text-xl font-semibold", unbounded.className)}>
           Claim Funds
         </h1>
-        <div className="w-full flex h-36 p-4 w-full mt-3 bg-white justify-between items-end rounded-2xl border border-2 border-black">
-         <p className={cn("text-xl font-semibold ", unbounded.className)}>
-         First <br/>
-         Bet is on Us <br/>
-         Claim 1 $APT to <br/>
-         get Started
-         </p>
-         <Button className="rounded-xl" onClick={()=>{fundacc()}}>
-          Claim
-         </Button>
+        <div className=" flex h-36 p-4 w-full mt-3 bg-white justify-between items-end rounded-2xl  border-2 border-black">
+          <p className={cn("text-xl font-semibold ", unbounded.className)}>
+            First <br />
+            Bet is on Us <br />
+            Claim 1 $APT to <br />
+            get Started
+          </p>
+          <Button className="rounded-xl" onClick={fundacc}>
+            {loading ? "Claiming..." : "Claim"}
+          </Button>
         </div>
       </div>
       <TrendingSection />

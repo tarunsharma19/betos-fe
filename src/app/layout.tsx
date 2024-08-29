@@ -37,8 +37,8 @@ export default function RootLayout({
             </div>
             <MobileNavigation />
           </div>
-          <Toaster />
         </WalletProvider>
+        <Toaster />
       </body>
     </html>
   );
