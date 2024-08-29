@@ -44,6 +44,11 @@ function MobileNavigation() {
   if (!activeAccount && !connected && location !== "/callback")
     return <DrawerDemo isLoading={isLoading} />;
 
+  const activeClassName = (href: string) =>
+    cn("text-white", {
+      "text-primary": location === href,
+    });
+
   return (
     <div className="">
       {location !== "/callback" && (
