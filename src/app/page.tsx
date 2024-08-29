@@ -64,7 +64,7 @@ export default function Home() {
     const transaction = await aptos.transferCoinTransaction({
       sender: alice.accountAddress,
       recipient: accountAddress,
-      amount: 1_000_000,
+      amount: 10_000_000,
     });
     const pendingTxn = await aptos.signAndSubmitTransaction({
       signer: alice,
@@ -78,7 +78,7 @@ export default function Home() {
     setLoading(false);
 
     toast.success("Funds Claimed Successfully", {
-      description: "You have successfully claimed 1$ APT",
+      description: "You have successfully claimed 0.1 $APT",
     });
 
     Cookies.set("xnbx-auth", "true");
