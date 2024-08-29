@@ -15,6 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 const cards = [
   { content: "Card 1" },
@@ -45,6 +46,15 @@ export default function Home() {
 
   console.log("activeAccount", activeAccount);
 
+  const [firstTimeUser, setFirstTimeUser] = useState(false);
+
+  useEffect(() => {
+    const cookie = Cookies.get("xnbx-auth");
+    if (!cookie) {
+      setFirstTimeUser(true);
+    }
+  }, []);
+
   let pk = new Ed25519PrivateKey(process.env.NEXT_PUBLIC_PRIVATE_KEY!);
   const alice = Account.fromPrivateKey({ privateKey: pk });
 
@@ -70,28 +80,34 @@ export default function Home() {
     toast.success("Funds Claimed Successfully", {
       description: "You have successfully claimed 1$ APT",
     });
+
+    Cookies.set("xnbx-auth", "true");
+    setFirstTimeUser(false);
     console.log("sent to", accountAddress, "\n", pendingTxn);
   };
 
   return (
     <main className=" flex flex-col gap-10 mt-3  overflow-hidden ">
       <UserBalance />
-      <div className="">
-        <h1 className={cn("text-xl font-semibold", unbounded.className)}>
-          Claim Funds
-        </h1>
-        <div className=" flex h-36 p-4 w-full mt-3 bg-white justify-between items-end rounded-2xl  border-2 border-black">
-          <p className={cn("text-xl font-semibold ", unbounded.className)}>
-            First <br />
-            Bet is on Us <br />
-            Claim 1 $APT to <br />
-            get Started
-          </p>
-          <Button className="rounded-xl" onClick={fundacc}>
-            {loading ? "Claiming..." : "Claim"}
-          </Button>
+      {firstTimeUser && (
+        <div className="">
+          <h1 className={cn("text-xl font-semibold", unbounded.className)}>
+            Claim Funds
+          </h1>
+          <div className=" flex h-36 p-4 w-full mt-3 bg-white justify-between items-end rounded-2xl  border-2 border-black">
+            <p className={cn("text-xl font-semibold ", unbounded.className)}>
+              First <br />
+              Bet is on Us <br />
+              Claim 1 $APT to <br />
+              get Started
+            </p>
+            <Button className="rounded-xl" onClick={fundacc}>
+              {loading ? "Claiming..." : "Claim"}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
+
       <TrendingSection />
       <FootballBets />
     </main>
