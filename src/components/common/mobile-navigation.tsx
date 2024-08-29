@@ -31,8 +31,6 @@ import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
 import { usePathname } from "next/navigation";
-import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
-import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
