@@ -8,6 +8,7 @@ import { TeamCardHome } from "./team-card-home";
 import { WinningStatsHome } from "./winning-stats-home";
 import { cn, unbounded } from "@/lib/utils";
 import { IReelFixture } from "./carousel";
+import { Button } from "../ui/button";
 
 export function MatchCardsHome() {
   const settings = {
@@ -65,7 +66,7 @@ const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
   const oddsValues = matchup?.odds.bets[0]?.values || [];
   return (
     <div className="px-1">
-      <Card className="bg-white p-3 rounded-2xl h-48 flex flex-col justify-between">
+      <Card className="bg-white p-3 rounded-2xl flex flex-col justify-between">
         <div className="grid grid-cols-5 w-full">
           <TeamCardHome
             teamName={matchup.teams.home.name}
@@ -88,6 +89,12 @@ const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
           draw={oddsValues[1].odd}
           away={oddsValues[2].odd}
         />
+         <Button
+              variant={"default"}
+              className="w-full mt-4 bg-gray-600 rounded-xl relative"
+            >
+              Place Bet
+          </Button>
       </Card>
     </div>
   );
