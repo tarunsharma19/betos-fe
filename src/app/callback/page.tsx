@@ -38,7 +38,7 @@ function CallbackPage() {
 
     const payload = jwtDecode<{ nonce: string }>(idToken);
     const jwtNonce = payload.nonce;
-    const ekp = ephemeralKeyPair;
+    const ekp = JSON.parse(localStorage.getItem("ekp")!);
  
     // Validate the EphemeralKeyPair
     if (!ekp || ekp.nonce !== jwtNonce || ekp.isExpired() ) {

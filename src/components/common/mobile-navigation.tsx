@@ -82,6 +82,7 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
 
   useEffect(() => {
     const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+    localStorage.setItem("ekp",JSON.stringify(ephemeralKeyPair))
     const searchParams = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
       redirect_uri: `${window.location.origin}/callback`,
