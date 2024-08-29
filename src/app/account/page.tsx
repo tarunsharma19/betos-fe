@@ -14,11 +14,18 @@ import {
 } from "@/lib/utils";
 import React, { useEffect, useState, useCallback } from "react";
 import useAccountBalance from "../../hooks/use-account-balance";
-import { useAptos } from "@/contexts/aptos-context";
+import { ResourceData, useAptos } from "@/contexts/aptos-context";
+import { AccountAddress } from "@aptos-labs/ts-sdk";
+import Widget from "@/components/common/penora";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 function AccountPage() {
   const { activeAccount } = useKeylessAccounts();
   const { account } = useAptosWallet();
+  const [accountHasResource, setAccountHasResource] = useState<boolean>(false);
+  const navigate = useRouter();
+
   const { resourceData } = useAptos();
 
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
@@ -81,7 +88,7 @@ function AccountPage() {
       <h1 className={cn("text-xl font-bold mt-3", unbounded.className)}>
         My Account
       </h1>
-      <Card className="h-40 p-4 mt-2 flex flex-col gap-3 rounded-2xl">
+      <Card className="h-40 p-4 mt-2 flex flex-col gap-3 rounded-2xl border-2 border-black">
         <h2 className={cn("text-xs font-semibold", unbounded.className)}>
           {accountAddress ? collapseAddress(accountAddress) : "Not Connected"}
         </h2>
@@ -93,6 +100,17 @@ function AccountPage() {
         </h2>
         <h1 className="text-xl font-bold">{filteredBets.length}</h1>
       </Card>
+      <div className="">
+        <div className=" flex h-20 p-4 w-full mt-3 bg-white justify-between items-center rounded-2xl  border-2 border-black">
+          <p className={cn("text-sm font-semibold ", unbounded.className)}>
+            Swap you token to $APT and start Betting,
+          </p>
+          <Button className="rounded-xl" onClick={() => navigate.push("/swap")}>
+            Swap Now
+          </Button>
+        </div>
+      </div>
+      {/* <Widget /> */}
       <div className="mt-4 mb-4">
         <h1 className={cn("text-xl font-bold mt-3", unbounded.className)}>
           Recent Bets

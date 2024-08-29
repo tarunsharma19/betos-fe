@@ -107,7 +107,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       <TrendingSection />
       <FootballBets />
     </main>
