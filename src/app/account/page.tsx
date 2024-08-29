@@ -30,6 +30,23 @@ function AccountPage() {
     });
   },[accountAddress])
 
+  const fetchList = async () => {
+    if (!account) return [];
+    // change this to be your module account address
+    const moduleAddress = "0xcbddf398841353776903dbab2fdaefc54f181d07e114ae818b1a67af28d1b018";
+    try {
+      const todoListResource = await aptos.getAccountResource(
+        {
+          accountAddress:account?.address,
+          resourceType:`${moduleAddress}::todolist::TodoList`
+        }
+      );
+      console.log(todoListResource)
+    } catch (e: any) {
+      console.log(e)
+    }
+  };
+
   
 
   return (

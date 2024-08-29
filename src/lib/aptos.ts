@@ -6,7 +6,6 @@ const APTOS_NETWORK: Network = Network.TESTNET;
 const config = new AptosConfig({ network: APTOS_NETWORK });
 export const aptos = new Aptos(config);
 
-
 export const getBalance = async (
     accountAddress: AccountAddress,
   ): Promise<number> => {
