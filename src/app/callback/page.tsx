@@ -46,12 +46,12 @@ function CallbackPage() {
     // }
 
     // const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET })); // Configure your network here
-    aptos.deriveKeylessAccount({
-        jwt:idToken,
-        ephemeralKeyPair,
-    }).then((res)=>{
-        setKeylessAcc(res)
-    });
+    // aptos.deriveKeylessAccount({
+    //     jwt:idToken,
+    //     ephemeralKeyPair,
+    // }).then((res)=>{
+    //     setKeylessAcc(res)
+    // });
 
 
 
