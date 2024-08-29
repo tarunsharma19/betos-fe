@@ -39,6 +39,13 @@ export default function RootLayout({
               </div>
               <MobileNavigation />
             </div>
+            <div className="z-10 flex flex-col h-full">
+              <div className="py-3 px-4 z-10 flex-grow overflow-y-auto">
+                {children}
+              </div>
+              <div className="h-20 h-[35svh]"></div>
+              <MobileNavigation />
+            </div>
           </AptosProvider>
         </WalletProvider>
         <Toaster />
