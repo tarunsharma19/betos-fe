@@ -11,7 +11,6 @@
   "dependencies": {
     "@aptos-connect/wallet-adapter-plugin": "^1.0.1",
     "@aptos-labs/ts-sdk": "^1.27.1",
-    "@aptos-labs/wallet-adapter-ant-design": "^3.0.11",
     "@aptos-labs/wallet-adapter-react": "^3.6.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.0",

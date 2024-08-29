@@ -28,6 +28,8 @@ import { useLongPress } from "@uidotdev/usehooks";
 import { toast } from "sonner";
 import { useMotionValue, useTransform, motion } from "framer-motion";
 import useAccountBalance from "@/app/hooks/use-account-balance";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { placeBet } from "@/lib/aptos";
 
 export interface IOddValue {
   value: string;
@@ -174,6 +176,9 @@ const MatchupCard = ({
   const [selected, setSelected] = React.useState<string>("");
   const [amount, setAmount] = React.useState<number>(0);
   const [reward, setReward] = React.useState<number>(0);
+  const { account, signAndSubmitTransaction } = useWallet();
+  const [transactionInProgress, setTransactionInProgress] =
+    React.useState<boolean>(false);
 
   const balance = useAccountBalance();
   // Extract odds values
@@ -230,6 +235,33 @@ const MatchupCard = ({
     }
   }, [amount, selected, oddsForRadio, reel]);
 
+  const handlePlaceBet = async () => {
+    if (!account || !selected || amount <= 0) {
+      toast.error("Invalid bet details");
+      return;
+    }
+
+    setTransactionInProgress(true);
+    console.log("Reel", reel);
+    const betDetails = {
+      address: account.address, // your target address
+      fixtureId: reel.fixture.id, // replace with actual fixture ID
+      option: selected === "home" ? 1 : selected === "away" ? 3 : 2, // example mapping for options
+      // multiply amount by 10^8
+      amount: Math.floor(amount * 10 ** 8), // replace with actual amount
+    };
+
+    const success = await placeBet(signAndSubmitTransaction, betDetails);
+
+    if (success) {
+      toast.success("Bet placed successfully!");
+    } else {
+      toast.error("Failed to place bet");
+    }
+
+    setTransactionInProgress(false);
+  };
+
   // Long press handler for placing a bet
   const duration = 500; // Total time to fill the button (in ms)
 
@@ -271,8 +303,9 @@ const MatchupCard = ({
       onStart: (event) => {
         setStateProgress(1); // Start the progress
       },
-      onFinish: (event) => {
+      onFinish: async (event) => {
         setStateProgress(0); // Reset progress when long press finishes
+        await handlePlaceBet();
         scrollNext();
       },
       onCancel: (event) => {
@@ -404,7 +437,10 @@ const MatchupCard = ({
               className="w-full  rounded-xl relative "
               size={"lg"}
             >
-              <span className="z-20">Place Bet</span>
+              <span className="z-20">
+                {" "}
+                {transactionInProgress ? "Placing Bet..." : "Place Bet"}
+              </span>
             </Button>
           </motion.div>
         </div>

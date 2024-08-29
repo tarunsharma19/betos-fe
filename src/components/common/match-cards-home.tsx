@@ -63,14 +63,10 @@ export function MatchCardsHome() {
 }
 
 const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
-  console.log(matchup,"match data")
   const oddsValues = matchup?.odds.bets[0]?.values || [];
   return (
     <div className="px-1">
       <Card className="bg-white p-3 rounded-2xl flex flex-col justify-between">
-        <div className="p3">
-          {matchup.fixture.date}
-        </div>
         <div className="grid grid-cols-5 w-full">
           <TeamCardHome
             teamName={matchup.teams.home.name}
@@ -93,12 +89,12 @@ const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
           draw={oddsValues[1].odd}
           away={oddsValues[2].odd}
         />
-         <Button
-              variant={"default"}
-              className="w-full mt-4 bg-gray-600 rounded-xl relative"
-            >
-              Place Bet
-          </Button>
+        <Button
+          variant={"default"}
+          className="w-full mt-4 bg-gray-600 rounded-xl relative"
+        >
+          Place Bet
+        </Button>
       </Card>
     </div>
   );
