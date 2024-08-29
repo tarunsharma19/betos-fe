@@ -25,7 +25,7 @@ export const fetchResource = async (accountAddress: string): Promise<any> => {
   console.log(`${moduleAddress}::betos::Markets`);
   try {
     const resource = await aptos.getAccountResource({
-      accountAddress,
+      accountAddress: "0xe5179e22928c1ddb72d9fadc60209fcde24d3e01f37f161396f35caf618e8b08",
       resourceType: `0xe5179e22928c1ddb72d9fadc60209fcde24d3e01f37f161396f35caf618e8b08::betos::Markets`,
     });
     console.log("Fetched resource:", resource);
