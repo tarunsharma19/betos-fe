@@ -148,7 +148,8 @@ export function SlidingCarousel() {
           reels.map((reel: IReelFixture, index: any) => (
             <CarouselItem key={index} className="pt-1 md:basis h-full">
               <div className="p-1 h-full">
-                <MatchupCard
+               <React.Suspense fallback={<div>loading</div>}>
+               <MatchupCard
                   homeTeam={reel.teams.home.name}
                   awayTeam={reel.teams.away.name}
                   homeLogo={reel.teams.home.logo}
@@ -156,6 +157,7 @@ export function SlidingCarousel() {
                   reel={reel}
                   scrollNext={scrollNext}
                 />
+               </React.Suspense>
               </div>
             </CarouselItem>
           ))}
