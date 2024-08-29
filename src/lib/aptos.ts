@@ -3,7 +3,7 @@ import { Network } from "aptos";
 
 
 const APTOS_NETWORK: Network = Network.TESTNET;
-const config = new AptosConfig({ fullnode: "https://rpc.ankr.com/http/aptos_testnet/v1" });
+const config = new AptosConfig({ network: APTOS_NETWORK });
 export const aptos = new Aptos(config);
 
 

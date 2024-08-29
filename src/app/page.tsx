@@ -67,15 +67,15 @@ export default function Home() {
         <h1 className={cn("text-xl font-semibold", unbounded.className)}>
           Claim Funds
         </h1>
-        <div className="w-full flex h-36 p-4 w-full mt-3 bg-white rounded-2xl border border-2 border-black">
+        <div className="w-full flex h-36 p-4 w-full mt-3 bg-white justify-between items-end rounded-2xl border border-2 border-black">
          <p className={cn("text-xl font-semibold ", unbounded.className)}>
          First <br/>
          Bet is on Us <br/>
          Claim 1 $APT to <br/>
          get Started
          </p>
-         <Button onClick={()=>{fundacc}}>
-
+         <Button className="rounded-xl" onClick={()=>{fundacc()}}>
+          Claim
          </Button>
         </div>
       </div>
