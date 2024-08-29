@@ -18,7 +18,7 @@ export const useAptosWallet = () => {
   // Handle wallet disconnection
   const handleDisconnect = useCallback(async () => {
     try {
-      await disconnect();
+      disconnect();
       console.log("Disconnected from wallet");
     } catch (error: any) {
       console.error("Failed to disconnect from wallet:", error.message);

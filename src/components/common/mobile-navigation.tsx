@@ -33,10 +33,11 @@ import { WalletName } from "@aptos-labs/wallet-adapter-react";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
-  const { connected, handleConnect, walletName, account } = useAptosWallet();
+  const { connected, handleConnect, walletName, account, isLoading } =
+    useAptosWallet();
   console.log("activeAccount", account);
 
-  if (!activeAccount && !connected) return <DrawerDemo />;
+  if (!activeAccount && !connected) return <DrawerDemo isLoading={isLoading} />;
 
   return (
     <div className="fixed bottom-3 mb-3 w-screen z-10 bg-transparent max-w-[600px]">
@@ -55,7 +56,7 @@ function MobileNavigation() {
 
 export default MobileNavigation;
 
-export function DrawerDemo() {
+export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
   const [open, setOpen] = useState(false);
   const ephemeralKeyPair = useEphemeralKeyPair();
   const [redirectUrl, setRedirectUrl] = useState<string>("");
@@ -86,6 +87,8 @@ export function DrawerDemo() {
     }
   }, [open, redirectUrl]);
 
+  console.log(isLoading, "isLoading");
+
   return (
     <Drawer open={open} onClose={() => setOpen(false)}>
       <DrawerTrigger asChild>
@@ -101,27 +104,31 @@ export function DrawerDemo() {
       </DrawerTrigger>
       <DrawerContent>
         <div className="flex items-center justify-center h-56 px-4">
-          <div>
-            <p className="text-lg mb-8 text-center">
-              Get started with Betos by connecting your wallet
-            </p>
-            {redirectUrl && (
-              <Link
-                href={redirectUrl}
-                className="flex justify-center items-center border px-8 py-2 hover:bg-gray-100 hover:shadow-sm active:bg-gray-50 active:scale-95 transition-all rounded-full"
+          {isLoading === true ? (
+            <div>Your account details are being fetched!</div>
+          ) : (
+            <div>
+              <p className="text-lg mb-8 text-center">
+                Get started with Betos by connecting your wallet
+              </p>
+              {redirectUrl && (
+                <Link
+                  href={redirectUrl}
+                  className="flex justify-center items-center border px-8 py-2 hover:bg-gray-100 hover:shadow-sm active:bg-gray-50 active:scale-95 transition-all rounded-full"
+                >
+                  <GoogleLogo />
+                  Sign in with Google
+                </Link>
+              )}
+              <Button
+                className="w-full rounded-full mt-3"
+                variant="default"
+                onClick={() => handleConnect("Petra" as WalletName<"Petra">)}
               >
-                <GoogleLogo />
-                Sign in with Google
-              </Link>
-            )}
-            <Button
-              className="w-full rounded-full mt-3"
-              variant="default"
-              onClick={() => handleConnect("Petra" as WalletName<"Petra">)}
-            >
-              Connect Aptos Wallet
-            </Button>
-          </div>
+                Connect Aptos Wallet
+              </Button>
+            </div>
+          )}
         </div>
       </DrawerContent>
     </Drawer>

@@ -13,11 +13,9 @@ function UserBalance() {
   const { activeAccount, accounts, disconnectKeylessAccount } =
     useKeylessAccounts();
 
-  const { account, handleDisconnect } = useAptosWallet();
+  const { account, handleDisconnect, isLoading } = useAptosWallet();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  if (!activeAccount && !account) return null;
 
   console.log("account", accounts);
 
@@ -32,37 +30,39 @@ function UserBalance() {
           height={50}
         />
       </div>
-      <div className="flex items-center  gap-2">
-        <div className="border-2 rounded-xl px-4 py-1 border-zinc-800 bg-white">
-          {
-            <p className="text-xs">
-              {activeAccount?.accountAddress
-                ? collapseAddress(activeAccount.accountAddress.toString())
-                : collapseAddress(account?.address)}
-            </p>
-          }
-        </div>
-        {loading && <p>Loading...</p>}
-        {error && <p className="text-red-500">{error}</p>}
-        <Button
-          className="rounded-full p-2  "
-          variant={"outline"}
-          size={"icon"}
-          onClick={async () => {
-            setLoading(true);
-            try {
-              await handleDisconnect();
-              disconnectKeylessAccount();
-            } catch (error: any) {
-              setError(error.message);
-            } finally {
-              setLoading(false);
+
+      {!isLoading && account && (
+        <div className="flex items-center  gap-2">
+          <div className="border-2 rounded-xl px-4 py-1 border-zinc-800 bg-white">
+            {
+              <p className="text-xs">
+                {activeAccount?.accountAddress
+                  ? collapseAddress(activeAccount.accountAddress.toString())
+                  : collapseAddress(account?.address)}
+              </p>
             }
-          }}
-        >
-          <LogOut size={24} />
-        </Button>
-      </div>
+          </div>
+
+          <Button
+            className="rounded-full p-2  "
+            variant={"outline"}
+            size={"icon"}
+            onClick={async () => {
+              setLoading(true);
+              try {
+                await handleDisconnect();
+                disconnectKeylessAccount();
+              } catch (error: any) {
+                setError(error.message);
+              } finally {
+                setLoading(false);
+              }
+            }}
+          >
+            <LogOut size={24} />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
