@@ -9,17 +9,14 @@ export function WinningStats({
   draw: number;
   away: number;
 }) {
+  const home_per = 100 / home;
+  const draw_per = 100 / draw;
+  const away_per = 100 / away;
 
-  const home_per = 100/home;
-  const draw_per = 100/draw;
-  const away_per = 100/away;
-
-  const total_per = home_per+draw_per+away_per;
-  const home_winning = Math.round(100*home_per/total_per);
-  const draw_winning = Math.round(100*draw_per/total_per);
-  const away_winning = Math.round(100*away_per/total_per);
-
-  // console.log(home_winning,draw_winning,away_winning,"test")
+  const total_per = home_per + draw_per + away_per;
+  const home_winning = Math.round((100 * home_per) / total_per);
+  const draw_winning = Math.round((100 * draw_per) / total_per);
+  const away_winning = Math.round((100 * away_per) / total_per);
 
   return (
     <div className="flex mt-1 text-sm">

@@ -17,8 +17,6 @@ function UserBalance() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  console.log("account", accounts);
-
   return (
     <div className="flex justify-between items-center">
       <div className="h-8">
@@ -26,8 +24,8 @@ function UserBalance() {
           src="/assets/brand-assets/brandlogo.png"
           alt="Brand"
           className="w-full h-full"
-          width={50}
-          height={50}
+          width={100}
+          height={100}
         />
       </div>
 
