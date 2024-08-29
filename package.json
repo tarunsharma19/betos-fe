@@ -11,6 +11,7 @@
   "dependencies": {
     "@aptos-connect/wallet-adapter-plugin": "^1.0.1",
     "@aptos-labs/ts-sdk": "^1.27.1",
+    "@aptos-labs/wallet-adapter-ant-design": "^3.0.11",
     "@aptos-labs/wallet-adapter-react": "^3.6.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.0",
@@ -31,6 +32,7 @@
     "lucide-react": "^0.435.0",
     "next": "14.2.6",
     "next-themes": "^0.3.0",
+    "petra-plugin-wallet-adapter": "^0.4.5",
     "react": "^18",
     "react-dom": "^18",
     "react-slick": "^0.30.2",

@@ -31,12 +31,13 @@ import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
 import { usePathname } from "next/navigation";
+import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
+import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
   const { connected, handleConnect, walletName, account, isLoading } =
     useAptosWallet();
-  console.log("activeAccount", account);
 
   const location = usePathname();
 
@@ -104,8 +105,6 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
       setOpen(false);
     }
   }, [location, open, redirectUrl]);
-
-  console.log(isLoading, "isLoading");
 
   return (
     <Drawer open={open} onClose={() => setOpen(false)}>

@@ -27,6 +27,7 @@ import { fetchReels } from "@/action";
 import { useLongPress } from "@uidotdev/usehooks";
 import { toast } from "sonner";
 import { useMotionValue, useTransform, motion } from "framer-motion";
+import useAccountBalance from "@/app/hooks/use-account-balance";
 
 export interface IOddValue {
   value: string;
@@ -174,6 +175,7 @@ const MatchupCard = ({
   const [amount, setAmount] = React.useState<number>(0);
   const [reward, setReward] = React.useState<number>(0);
 
+  const balance = useAccountBalance();
   // Extract odds values
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const oddsValues = reel?.odds.bets[0]?.values || [];
@@ -201,10 +203,21 @@ const MatchupCard = ({
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (balance === null) return;
+    if (Number(e.target.value) > balance) {
+      toast.error("Insufficient Balance");
+      return;
+    }
     setAmount(Number(e.target.value));
   };
 
   const addAmount = (value: number) => {
+    if (balance === null) return;
+    if (amount + value > balance) {
+      toast.error("Insufficient Balance");
+      return;
+    }
+
     setAmount((prevAmount) => prevAmount + value);
   };
 
@@ -215,7 +228,7 @@ const MatchupCard = ({
     } else {
       setReward(0);
     }
-  }, [amount, selected, oddsForRadio]);
+  }, [amount, selected, oddsForRadio, reel]);
 
   // Long press handler for placing a bet
   const duration = 500; // Total time to fill the button (in ms)
@@ -298,13 +311,20 @@ const MatchupCard = ({
             onChange={handleSelect}
           />
           <div className="grid grid-cols-6 place-items-center mt-4 gap-1">
-            <Input
-              placeholder="Enter your Amount"
-              className="w-full rounded-full col-span-4"
-              type="number"
-              value={amount}
-              onChange={handleAmountChange}
-            />
+            <div className="w-full col-span-4 flex gap-1 items-center">
+              <Input
+                placeholder="Enter your Amount"
+                className="w-full flex-grow rounded-full  border-none active:ring-0 active:outline-none focus-visible:ring-0 focus-visible:outline-none focus:ring-0 focus:outline-none focus:border-none"
+                type="number"
+                value={
+                  amount === 0 ? "" : amount.toString().replace(/[^0-9.]/g, "")
+                }
+                onChange={handleAmountChange}
+              />
+              <div className=" text-gray-500">
+                <span>Max:{balance}</span>
+              </div>
+            </div>
             <div className="col-span-2">
               <Select defaultValue="apt">
                 <SelectTrigger className="rounded-full w-full">
@@ -332,23 +352,28 @@ const MatchupCard = ({
             <Badge
               variant={"secondary"}
               className="flex justify-center items-center py-1"
-              onClick={() => addAmount(1)}
+              onClick={() => addAmount(0.01)}
             >
-              +1
+              +0.01
             </Badge>
             <Badge
               variant={"secondary"}
               className="flex justify-center items-center py-1"
-              onClick={() => addAmount(10)}
+              onClick={() => addAmount(0.05)}
             >
-              +10
+              +0.05
             </Badge>
             <Badge
               variant={"secondary"}
               className="flex justify-center items-center py-1"
-              onClick={() => addAmount(100)}
+              onClick={() => {
+                if (balance === null) return;
+                setAmount(0);
+
+                setAmount(+balance.toFixed(2));
+              }}
             >
-              +100
+              Max
             </Badge>
           </div>
         </div>
@@ -364,7 +389,7 @@ const MatchupCard = ({
           <motion.div
             initial={{ scale: 1 }}
             whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.1 }}
+            transition={{ duration: 1 }}
             {...attrs} // Spread the long press handlers onto the motion div
             className="relative w-full h-full bg-transparent"
           >
@@ -372,13 +397,14 @@ const MatchupCard = ({
               style={{
                 height: fillHeight,
               }}
-              className="absolute bottom-0 left-0 right-0 bg-green-500 rounded-xl"
+              className="absolute bottom-0 left-0 z-10 right-0 bg-gray-900 rounded-xl"
             />
             <Button
               variant={"default"}
-              className="w-full bg-gray-600 rounded-xl relative"
+              className="w-full  rounded-xl relative "
+              size={"lg"}
             >
-              Place Bet
+              <span className="z-20">Place Bet</span>
             </Button>
           </motion.div>
         </div>
