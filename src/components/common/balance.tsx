@@ -31,7 +31,7 @@ function UserBalance() {
         />
       </div>
 
-      {!isLoading && account && (
+      {((!isLoading && account) || activeAccount) && (
         <div className="flex items-center  gap-2">
           <div className="border-2 rounded-xl px-4 py-1 border-zinc-800 bg-white">
             {

@@ -30,6 +30,7 @@ import useEphemeralKeyPair from "@/lib/core/useEphemeralKeyPair";
 import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
+import { usePathname } from "next/navigation";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
@@ -37,19 +38,30 @@ function MobileNavigation() {
     useAptosWallet();
   console.log("activeAccount", account);
 
-  if (!activeAccount && !connected) return <DrawerDemo isLoading={isLoading} />;
+  const location = usePathname();
+
+  if (!activeAccount && !connected && location !== "/callback")
+    return <DrawerDemo isLoading={isLoading} />;
 
   return (
-    <div className="fixed bottom-3 mb-3 w-screen z-10 bg-transparent max-w-[600px]">
-      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent  px-5 bg-transparent">
-        <div className="h-14 w-full bg-black flex aspect-square cursor-pointer items-center justify-around rounded-2xl ">
-          {DATA.navbar.map((item: any, index: number) => (
-            <Link key={index} href={item.href} className="text-white text-sm">
-              {item.icon}
-            </Link>
-          ))}
+    <div className="">
+      {location !== "/callback" && (
+        <div className="fixed bottom-3 mb-3 w-screen z-10 bg-transparent max-w-[600px]">
+          <div className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent  px-5 bg-transparent">
+            <div className="h-14 w-full bg-black flex aspect-square cursor-pointer items-center justify-around rounded-2xl ">
+              {DATA.navbar.map((item: any, index: number) => (
+                <Link
+                  key={index}
+                  href={item.href}
+                  className="text-white text-sm"
+                >
+                  {item.icon}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -61,6 +73,8 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
   const ephemeralKeyPair = useEphemeralKeyPair();
   const [redirectUrl, setRedirectUrl] = useState<string>("");
   const { handleConnect } = useAptosWallet();
+
+  const location = usePathname();
 
   useEffect(() => {
     const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
@@ -85,7 +99,11 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
     if (open && redirectUrl) {
       setOpen(false);
     }
-  }, [open, redirectUrl]);
+
+    if (location === "/callback") {
+      setOpen(false);
+    }
+  }, [location, open, redirectUrl]);
 
   console.log(isLoading, "isLoading");
 

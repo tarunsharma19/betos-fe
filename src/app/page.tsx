@@ -14,6 +14,7 @@ import { Unbounded } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const cards = [
   { content: "Card 1" },
@@ -27,6 +28,8 @@ export default function Home() {
   const { account } = useAptosWallet();
   const [accountAddress, setAccountAddress] = useState<any>();
   const [balance, setBalance] = useState<any>();
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (activeAccount?.accountAddress) {
@@ -46,6 +49,7 @@ export default function Home() {
   const alice = Account.fromPrivateKey({ privateKey: pk });
 
   const fundacc = async () => {
+    setLoading(true);
     console.log("called");
     const transaction = await aptos.transferCoinTransaction({
       sender: alice.accountAddress,
@@ -59,6 +63,12 @@ export default function Home() {
 
     getBalance(accountAddress).then((res) => {
       setBalance(res / 10 ** 8);
+    });
+
+    setLoading(false);
+
+    toast.success("Funds Claimed Successfully", {
+      description: "You have successfully claimed 1$ APT",
     });
     console.log("sent to", accountAddress, "\n", pendingTxn);
   };
@@ -78,7 +88,7 @@ export default function Home() {
             get Started
           </p>
           <Button className="rounded-xl" onClick={fundacc}>
-            Claim
+            {loading ? "Claiming..." : "Claim"}
           </Button>
         </div>
       </div>
