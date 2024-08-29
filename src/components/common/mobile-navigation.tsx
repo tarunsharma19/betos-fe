@@ -31,22 +31,17 @@ import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
 import { usePathname } from "next/navigation";
-import { ephemeralKeyPair } from "@/lib/aptos";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
   const { connected, handleConnect, walletName, account, isLoading } =
     useAptosWallet();
+  console.log("activeAccount", account);
 
   const location = usePathname();
 
   if (!activeAccount && !connected && location !== "/callback")
     return <DrawerDemo isLoading={isLoading} />;
-
-  const activeClassName = (href: string) =>
-    cn("text-white", {
-      "text-primary": location === href,
-    });
 
   return (
     <div className="">
@@ -75,6 +70,7 @@ export default MobileNavigation;
 
 export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
   const [open, setOpen] = useState(false);
+  const ephemeralKeyPair = useEphemeralKeyPair();
   const [redirectUrl, setRedirectUrl] = useState<string>("");
   const { handleConnect } = useAptosWallet();
 
@@ -82,7 +78,6 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
 
   useEffect(() => {
     const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-    localStorage.setItem("ekp",JSON.stringify(ephemeralKeyPair))
     const searchParams = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
       redirect_uri: `${window.location.origin}/callback`,
@@ -109,6 +104,8 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
       setOpen(false);
     }
   }, [location, open, redirectUrl]);
+
+  console.log(isLoading, "isLoading");
 
   return (
     <Drawer open={open} onClose={() => setOpen(false)}>
