@@ -111,7 +111,7 @@ export const MatchupCard = ({
     const betDetails = {
       address: account.address,
       fixtureId: reel.fixture.id,
-      option: selected === "home" ? 1 : selected === "away" ? 3 : 2,
+      option: selected === "home" ? 0 : selected === "away" ? 2 : 1,
       amount: Math.floor(amount * 10 ** 8),
     };
 
@@ -198,14 +198,11 @@ export const MatchupCard = ({
             <div className="w-full col-span-4 flex gap-1 items-center">
               <Input
                 placeholder="Enter your Amount"
-                className="w-full flex-grow rounded-full border-none focus-visible:ring-0"
+                className="w-full flex-grow rounded-full "
                 type="number"
                 value={amount === 0 ? "" : amount.toString()}
                 onChange={handleAmountChange}
               />
-              <div className="text-gray-500">
-                <span>Max: {balance}</span>
-              </div>
             </div>
             <div className="col-span-2">
               <Select defaultValue="apt">
@@ -254,7 +251,7 @@ export const MatchupCard = ({
                 }
               }}
             >
-              Max
+              Max {balance?.toFixed(2)}
             </Badge>
           </div>
         </div>
