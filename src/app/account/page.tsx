@@ -4,11 +4,15 @@ import UserBalance from "@/components/common/balance";
 import { MatchCardsProfile } from "@/components/common/MobileCardsProfile";
 import { Card } from "@/components/ui/card";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
-import { aptos, fetchResource } from "@/lib/aptos";
 import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
 import { collapseAddress } from "@/lib/core/utils";
-import { cn, unbounded } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import {
+  cn,
+  convertAddress,
+  getUniqueFixtureIds,
+  unbounded,
+} from "@/lib/utils";
+import React, { useEffect, useState, useCallback } from "react";
 import useAccountBalance from "../../hooks/use-account-balance";
 import { ResourceData, useAptos } from "@/contexts/aptos-context";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
@@ -19,11 +23,17 @@ import { useRouter } from "next/navigation";
 function AccountPage() {
   const { activeAccount } = useKeylessAccounts();
   const { account } = useAptosWallet();
-  const [accountAddress, setAccountAddress] = useState<string | null>(null);
   const [accountHasResource, setAccountHasResource] = useState<boolean>(false);
   const navigate = useRouter();
 
   const { resourceData } = useAptos();
+
+  const [accountAddress, setAccountAddress] = useState<string | null>(null);
+  const [filteredBets, setFilteredBets] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const balance = useAccountBalance();
 
   useEffect(() => {
     const address = account?.address || activeAccount?.accountAddress;
@@ -32,34 +42,45 @@ function AccountPage() {
     }
   }, [account, activeAccount]);
 
-  const balance = useAccountBalance();
-
-  const [filteredBets, setFilteredBets] = useState<ResourceData[]>([]);
-
-  console.log("resourceData", resourceData);
-
   useEffect(() => {
-    if (!accountAddress || resourceData.length === 0) {
-      return;
-    }
+    if (!accountAddress || resourceData.length == 0) return;
+    console.log(accountAddress);
+    console.log("resourceData", resourceData[0].value.predictions);
 
-    console.log("acc-address", accountAddress);
-
-    const filtered = resourceData.filter((resource) =>
-      resource.value.predictions.some(
-        (prediction) => prediction.user === accountAddress
-      )
+    const filtered = resourceData[0].value.predictions.filter(
+      (bet: any) => bet.user === convertAddress(accountAddress)
     );
 
-    // Only update state if the filtered data is different
-    setFilteredBets((prevFilteredBets) => {
-      const isSame =
-        JSON.stringify(prevFilteredBets) === JSON.stringify(filtered);
-      return isSame ? prevFilteredBets : filtered;
-    });
+    setFilteredBets(filtered);
   }, [resourceData, accountAddress]);
 
-  console.log("filteredBets", filteredBets);
+  const fetchReels = useCallback(async (uniqueIds: string[]) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        "https://data-server-aptos.onrender.com/recent-bets",
+        {
+          method: "POST",
+          body: JSON.stringify({ fixtureIds: ["1208512"] }),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch");
+      return await res.json();
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (filteredBets.length > 0) {
+      const uniqueIds = getUniqueFixtureIds(filteredBets);
+      fetchReels(uniqueIds);
+    }
+  }, [filteredBets, fetchReels]);
 
   return (
     <div className="h-full">
@@ -72,31 +93,30 @@ function AccountPage() {
           {accountAddress ? collapseAddress(accountAddress) : "Not Connected"}
         </h2>
         <h1 className="text-xl font-bold">
-          {balance ? balance + " APT" : "Fetching Balance..."}{" "}
+          {balance ? `${balance} APT` : "Fetching Balance..."}{" "}
         </h1>
         <h2 className={cn("text-xs font-semibold", unbounded.className)}>
           Total bets
         </h2>
-        <h1 className="text-xl font-bold">10</h1>
+        <h1 className="text-xl font-bold">{filteredBets.length}</h1>
       </Card>
       <div className="">
-          <div className=" flex h-20 p-4 w-full mt-3 bg-white justify-between items-center rounded-2xl  border-2 border-black">
-            <p className={cn("text-xl font-semibold ", unbounded.className)}>
-              Swap you token to <br />
-              $APT and start Betting,
-            </p>
-            <Button className="rounded-xl" onClick={()=>navigate.push("/swap")}>
-              Swap Now
-            </Button>
-          </div>
+        <div className=" flex h-20 p-4 w-full mt-3 bg-white justify-between items-center rounded-2xl  border-2 border-black">
+          <p className={cn("text-sm font-semibold ", unbounded.className)}>
+            Swap you token to $APT and start Betting,
+          </p>
+          <Button className="rounded-xl" onClick={() => navigate.push("/swap")}>
+            Swap Now
+          </Button>
         </div>
+      </div>
       {/* <Widget /> */}
       <div className="mt-4 mb-4">
         <h1 className={cn("text-xl font-bold mt-3", unbounded.className)}>
           Recent Bets
         </h1>
       </div>
-      {resourceData.length > 0 ? (
+      {filteredBets.length > 0 ? (
         <MatchCardsProfile />
       ) : (
         <p>No recent bets found. Create a new bet to get started!</p>
