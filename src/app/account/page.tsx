@@ -111,7 +111,7 @@ function AccountPage() {
           {accountAddress ? collapseAddress(accountAddress) : "Not Connected"}
         </h2>
         <h1 className="text-xl font-bold">
-          {balance == 0.2 ? `0 APT` : "Fetching Balance..."}{" "}
+          {balance  ? `0 APT` : "Fetching Balance..."}{" "}
         </h1>
         <h2 className={cn("text-xs font-semibold", unbounded.className)}>
           Total bets
