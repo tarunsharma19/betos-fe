@@ -3,13 +3,13 @@ import {
   Aptos,
   AptosConfig,
   EphemeralKeyPair,
-  KeylessAccount,
   Network,
 } from "@aptos-labs/ts-sdk";
 import { InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 
 const APTOS_NETWORK: Network = Network.TESTNET;
 const config = new AptosConfig({ network: APTOS_NETWORK });
+export const ephemeralKeyPair = EphemeralKeyPair.generate();
 
 export const aptos = new Aptos(config);
 
@@ -69,7 +69,7 @@ export const placeBet: any = async (
   try {
     const response = await signAndSubmitTransaction(transaction);
     console.log("Transaction response:", response);
-    
+
     await aptos.waitForTransaction({ transactionHash: response.hash });
     console.log("Transaction confirmed:", response.hash);
 
