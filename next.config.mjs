@@ -8,7 +8,6 @@ const nextConfig = {
           {
             protocol: 'https',
             hostname: 'media.api-sports.io',
-            
           },
           {
             protocol: 'https',

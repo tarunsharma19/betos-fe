@@ -52,24 +52,20 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
 
   console.log(combinedData);
 
-  const prepareTeamsData = (data: any) => {
-    const teams = data.map((matchup: any) => {
-      const home = matchup.homeTeam;
-      const away = matchup.awayTeam;
-      const homeLogo = matchup.homeTeamLogo;
-      const awayLogo = matchup.awayTeamLogo;
-      return { home, away, homeLogo, awayLogo };
-    });
-    return teams;
-  };
   return (
     <div className="">
       <Slider {...settings} className="">
-        {teams.map((machup, i) => (
+        {combinedData?.map((machup: any, i: any) => (
           <div className="px-1" key={i}>
             <Card className="bg-white p-6  rounded-2xl h-52">
+              <h2 className="text-center w-full">
+                {machup.fixtureData.fixture.date}
+              </h2>
               <div className="grid grid-cols-3 w-full ">
-                <TeamCard teamName={machup.home} teamLogo={machup.homeLogo} />
+                <TeamCard
+                  teamName={machup.fixtureData.teams.home.name}
+                  teamLogo={machup.fixtureData.teams.home.logo}
+                />
                 <div className="flex justify-center h-auto items-center aspect-square">
                   <Image
                     src={"/assets/vs.png"}
@@ -78,7 +74,10 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
                     alt="VS"
                   />
                 </div>
-                <TeamCard teamName={machup.away} teamLogo={machup.awayLogo} />
+                <TeamCard
+                  teamName={machup.fixtureData.teams.away.name}
+                  teamLogo={machup.fixtureData.teams.away.logo}
+                />
               </div>
             </Card>
           </div>
