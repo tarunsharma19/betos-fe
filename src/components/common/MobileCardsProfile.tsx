@@ -51,6 +51,17 @@ export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
   ];
 
   console.log(combinedData);
+
+  const prepareTeamsData = (data: any) => {
+    const teams = data.map((matchup: any) => {
+      const home = matchup.homeTeam;
+      const away = matchup.awayTeam;
+      const homeLogo = matchup.homeTeamLogo;
+      const awayLogo = matchup.awayTeamLogo;
+      return { home, away, homeLogo, awayLogo };
+    });
+    return teams;
+  };
   return (
     <div className="">
       <Slider {...settings} className="">

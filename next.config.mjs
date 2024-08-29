@@ -10,6 +10,10 @@ const nextConfig = {
             hostname: 'media.api-sports.io',
             
           },
+          {
+            protocol: 'https',
+            hostname: 'encrypted-tbn0.gstatic.com',
+          }
         ],
       },
 };

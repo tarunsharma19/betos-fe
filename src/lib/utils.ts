@@ -1,6 +1,11 @@
 import { type ClassValue, clsx } from "clsx";
 import { Unbounded } from "next/font/google";
 import { twMerge } from "tailwind-merge";
+import moment from "moment";
+
+export function formatUtcDate(utcDate: string | Date): string {
+  return moment.utc(utcDate).format("DD MMM YYYY").toUpperCase();
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
