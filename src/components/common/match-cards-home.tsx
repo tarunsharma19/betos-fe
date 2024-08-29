@@ -54,40 +54,41 @@ export function MatchCardsHome() {
     <div>
       <Slider {...settings}>
         {reels.map((matchup, index) => (
-          <div className="px-1" key={index}>
-            <Card className="bg-white p-3 rounded-2xl h-48 flex flex-col justify-between">
-              <div className="grid grid-cols-5 w-full">
-                <TeamCardHome
-                  teamName={matchup.teams.home.name}
-                  teamLogo={matchup.teams.home.logo}
-                />
-                <div className="flex justify-center p-3 items-center h-16">
-                  <Image
-                    src={"/assets/vs.png"}
-                    width={40}
-                    height={40}
-                    alt="VS"
-                  />
-                </div>
-                <TeamCardHome
-                  teamName={matchup.teams.away.name}
-                  teamLogo={matchup.teams.away.logo}
-                />
-              </div>
-              <hr className="my-2" />
-              <h6
-                className={cn(
-                  "text-sm mb-1 font-semibold",
-                  unbounded.className
-                )}
-              >
-                Winning Percentage:
-              </h6>
-              <WinningStatsHome home={15} draw={35} away={65} />
-            </Card>
-          </div>
+          <MatchCard key={index} matchup={matchup} />
         ))}
       </Slider>
     </div>
   );
 }
+
+const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
+  const oddsValues = matchup?.odds.bets[0]?.values || [];
+  return (
+    <div className="px-1">
+      <Card className="bg-white p-3 rounded-2xl h-48 flex flex-col justify-between">
+        <div className="grid grid-cols-5 w-full">
+          <TeamCardHome
+            teamName={matchup.teams.home.name}
+            teamLogo={matchup.teams.home.logo}
+          />
+          <div className="flex justify-center p-3 items-center h-16">
+            <Image src={"/assets/vs.png"} width={40} height={40} alt="VS" />
+          </div>
+          <TeamCardHome
+            teamName={matchup.teams.away.name}
+            teamLogo={matchup.teams.away.logo}
+          />
+        </div>
+        <hr className="my-2" />
+        <h6 className={cn("text-sm mb-1 font-semibold", unbounded.className)}>
+          Winning Percentage:
+        </h6>
+        <WinningStatsHome
+          home={oddsValues[0].odd}
+          draw={oddsValues[1].odd}
+          away={oddsValues[2].odd}
+        />
+      </Card>
+    </div>
+  );
+};
