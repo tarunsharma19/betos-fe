@@ -9,9 +9,17 @@ export interface ResourceData {
     admin: string;
     expiry: string;
     fixture_id: string;
-    predictions: any[];
+    predictions: Prediction[];
     status: number;
   };
+}
+
+export interface Prediction {
+  fixture_id: string;
+  odds: string;
+  outcome: string;
+  user: string;
+  wager: string;
 }
 
 interface AptosContextProps {
@@ -38,17 +46,16 @@ export const AptosProvider: React.FC<{ children: React.ReactNode }> = ({
       "0xe5179e22928c1ddb72d9fadc60209fcde24d3e01f37f161396f35caf618e8b08";
     try {
       const resource = await aptos.getAccountResource({
-        accountAddress: account?.address,
+        accountAddress: moduleAddress,
         resourceType: `${moduleAddress}::betos::Markets`, // Replace with actual module and resource names
       });
-      console.log("resource", resource);
       if (resource) {
-        setResourceData(resource.data as ResourceData[]);
+        setResourceData(resource._id.data as ResourceData[]);
       }
     } catch (e: any) {
       setResourceData([]);
     }
-  }, [account?.address, aptos]);
+  }, [account, aptos]);
 
   useEffect(() => {
     if (account?.address) {

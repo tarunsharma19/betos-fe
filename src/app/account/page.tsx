@@ -10,39 +10,52 @@ import { collapseAddress } from "@/lib/core/utils";
 import { cn, unbounded } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import useAccountBalance from "../../hooks/use-account-balance";
-import { ResourceData } from "@/contexts/aptos-context";
+import { ResourceData, useAptos } from "@/contexts/aptos-context";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
 
 function AccountPage() {
   const { activeAccount } = useKeylessAccounts();
   const { account } = useAptosWallet();
   const [accountAddress, setAccountAddress] = useState<string | null>(null);
-  const [resourceData, setResourceData] = useState<ResourceData[]>([]);
   const [accountHasResource, setAccountHasResource] = useState<boolean>(false);
 
-  const fetchResourceData = async (address: string) => {
-    console.log("Fetching resource data for address:", address);
-    if (!address) return;
-    const resource = await fetchResource(address);
-
-    if (resource) {
-      setResourceData([resource]); // Assuming resource is an object and you want to wrap it in an array
-      setAccountHasResource(true);
-    } else {
-      setResourceData([]);
-      setAccountHasResource(false);
-    }
-  };
+  const { resourceData } = useAptos();
 
   useEffect(() => {
     const address = account?.address || activeAccount?.accountAddress;
     if (address) {
       setAccountAddress(address.toString());
-      fetchResourceData(address.toString());
     }
   }, [account, activeAccount]);
 
   const balance = useAccountBalance();
+
+  const [filteredBets, setFilteredBets] = useState<ResourceData[]>([]);
+
+  console.log("resourceData", resourceData);
+
+  useEffect(() => {
+    if (!accountAddress || resourceData.length === 0) {
+      return;
+    }
+
+    console.log("acc-address", accountAddress);
+
+    const filtered = resourceData.filter((resource) =>
+      resource.value.predictions.some(
+        (prediction) => prediction.user === accountAddress
+      )
+    );
+
+    // Only update state if the filtered data is different
+    setFilteredBets((prevFilteredBets) => {
+      const isSame =
+        JSON.stringify(prevFilteredBets) === JSON.stringify(filtered);
+      return isSame ? prevFilteredBets : filtered;
+    });
+  }, [resourceData, accountAddress]);
+
+  console.log("filteredBets", filteredBets);
 
   return (
     <div className="h-full">
@@ -67,7 +80,7 @@ function AccountPage() {
           Recent Bets
         </h1>
       </div>
-      {accountHasResource ? (
+      {resourceData.length > 0 ? (
         <MatchCardsProfile />
       ) : (
         <p>No recent bets found. Create a new bet to get started!</p>
