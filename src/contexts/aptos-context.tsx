@@ -4,7 +4,6 @@ import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 export interface ResourceData {
-  key: string;
   value: {
     admin: string;
     expiry: string;
