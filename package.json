@@ -12,6 +12,7 @@
     "@aptos-connect/wallet-adapter-plugin": "^1.0.1",
     "@aptos-labs/ts-sdk": "^1.27.1",
     "@aptos-labs/wallet-adapter-react": "^3.6.0",
+    "@panoraexchange/widget-sdk": "^1.0.11",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
