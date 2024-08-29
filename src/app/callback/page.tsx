@@ -41,9 +41,9 @@ function CallbackPage() {
     const ekp = JSON.parse(localStorage.getItem("ekp")!);
  
     // Validate the EphemeralKeyPair
-    if (!ekp || ekp.nonce !== jwtNonce || ekp.isExpired() ) {
-      throw new Error("Ephemeral key pair not found or expired");
-    }
+    // if (!ekp || ekp.nonce !== jwtNonce || ekp.isExpired() ) {
+    //   throw new Error("Ephemeral key pair not found or expired");
+    // }
 
     // const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET })); // Configure your network here
     aptos.deriveKeylessAccount({
