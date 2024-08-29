@@ -31,6 +31,7 @@ import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
 import { usePathname } from "next/navigation";
+import { ephemeralKeyPair } from "@/lib/aptos";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
@@ -69,7 +70,6 @@ export default MobileNavigation;
 
 export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
   const [open, setOpen] = useState(false);
-  const ephemeralKeyPair = useEphemeralKeyPair();
   const [redirectUrl, setRedirectUrl] = useState<string>("");
   const { handleConnect } = useAptosWallet();
 

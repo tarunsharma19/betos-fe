@@ -2,12 +2,15 @@ import {
   AccountAddress,
   Aptos,
   AptosConfig,
+  EphemeralKeyPair,
   Network,
 } from "@aptos-labs/ts-sdk";
 import { InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 
 const APTOS_NETWORK: Network = Network.TESTNET;
 const config = new AptosConfig({ network: APTOS_NETWORK });
+export const ephemeralKeyPair = EphemeralKeyPair.generate();
+
 export const aptos = new Aptos(config);
 
 export const getBalance = async (

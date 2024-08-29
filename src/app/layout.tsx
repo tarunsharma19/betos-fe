@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { WalletProvider } from "@/components/common/wallet.provider";
 import { Toaster } from "@/components/ui/sonner";
 import { AptosProvider } from "@/contexts/aptos-context";
+import { KeylessAccount } from "@aptos-labs/ts-sdk";
+import { KeylessAccountProvider } from "@/contexts/keyless-contect";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +45,7 @@ export default function RootLayout({
         // plugins={wallets}
         >
           <AptosProvider>
+            <KeylessAccountProvider>
             <div className="z-10 flex flex-col h-full">
               <div className="py-3 px-4 z-10 flex-grow overflow-y-auto">
                 {children}
@@ -50,6 +53,7 @@ export default function RootLayout({
               <div className="h-20"></div>
               <MobileNavigation />
             </div>
+            </KeylessAccountProvider>
           </AptosProvider>
         </WalletProvider>
         <Toaster />
