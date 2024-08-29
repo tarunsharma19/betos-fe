@@ -9,7 +9,7 @@ import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
 import { collapseAddress } from "@/lib/core/utils";
 import { cn, unbounded } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import useAccountBalance from "../hooks/use-account-balance";
+import useAccountBalance from "../../hooks/use-account-balance";
 import { ResourceData } from "@/contexts/aptos-context";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
 
@@ -54,7 +54,7 @@ function AccountPage() {
         <h2 className={cn("text-xs font-semibold", unbounded.className)}>
           {accountAddress ? collapseAddress(accountAddress) : "Not Connected"}
         </h2>
-        <h1 className="text-xl font-bold">{balance && balance+" APT"} </h1>
+        <h1 className="text-xl font-bold">{balance && balance + " APT"} </h1>
         <h2 className={cn("text-xs font-semibold", unbounded.className)}>
           Total bets
         </h2>

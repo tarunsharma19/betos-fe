@@ -16,7 +16,7 @@ import { cn, unbounded } from "@/lib/utils";
 import { useLongPress } from "@uidotdev/usehooks";
 import { toast } from "sonner";
 import { useMotionValue, useTransform, motion } from "framer-motion";
-import useAccountBalance from "@/app/hooks/use-account-balance";
+import useAccountBalance from "@/hooks/use-account-balance";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { placeBet } from "@/lib/aptos";
 import { Card, CardContent } from "../ui/card";

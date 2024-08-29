@@ -9,6 +9,7 @@ import { WinningStatsHome } from "./winning-stats-home";
 import { cn, unbounded } from "@/lib/utils";
 import { IReelFixture } from "./carousel";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export function MatchCardsHome() {
   const settings = {
@@ -63,6 +64,7 @@ export function MatchCardsHome() {
 }
 
 const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
+  const navigate = useRouter();
   const oddsValues = matchup?.odds.bets[0]?.values || [];
   return (
     <div className="px-1">
@@ -92,6 +94,9 @@ const MatchCard = ({ matchup }: { matchup: IReelFixture }) => {
         <Button
           variant={"default"}
           className="w-full mt-4 bg-gray-600 rounded-xl relative"
+          onClick={() =>
+            navigate.push(`/slides?fixtureId=${matchup.fixture.id}`)
+          }
         >
           Place Bet
         </Button>

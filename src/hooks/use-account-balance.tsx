@@ -1,9 +1,10 @@
 // src/hooks/useAccountBalance.ts
 import { useEffect, useState } from "react";
 import { getBalance } from "@/lib/aptos";
-import { useAptosWallet } from "@/hooks/use-aptos-wallet";
+
 import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
 import { AccountAddress } from "@aptos-labs/ts-sdk";
+import { useAptosWallet } from "./use-aptos-wallet";
 
 const useAccountBalance = () => {
   const { activeAccount } = useKeylessAccounts();

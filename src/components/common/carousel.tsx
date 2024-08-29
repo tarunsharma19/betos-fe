@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { MatchupCard } from "./MatchupCard";
+import { useSearchParams } from "next/navigation";
 
 export interface IOddValue {
   value: string;
@@ -84,6 +85,10 @@ export function SlidingCarousel() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
+  const searchParams = useSearchParams();
+
+  const fixtureId = searchParams.get("fixtureId");
+
   const fetchReels = async () => {
     setLoading(true);
     setError(null);
@@ -91,7 +96,28 @@ export function SlidingCarousel() {
       const res = await fetch("https://data-server-aptos.onrender.com/reels");
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
-      setReels(data.data);
+
+      if (!data.data) throw new Error("No data found");
+      let response = data.data;
+
+      if (fixtureId) {
+        // Parse fixtureId to a number for comparison, if it's a string
+        const fixtureIdNumber = Number(fixtureId);
+
+        // Find the index of the item with the matching fixture.id
+        const index = response.findIndex(
+          (reel: IReelFixture) => reel.fixture.id === fixtureIdNumber
+        );
+
+        if (index !== -1) {
+          // Remove the item from its original position and create a new array
+          const matchedReel = response.splice(index, 1)[0];
+          // Add the item to the beginning of the array
+          response = [matchedReel, ...response];
+        }
+      }
+
+      setReels(response);
     } catch (e: any) {
       setError(e.message);
       setReels([]);
