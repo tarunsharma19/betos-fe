@@ -1,14 +1,7 @@
 "use client";
-import { useKeylessAccount } from "@/contexts/keyless-contect";
-import { aptos, ephemeralKeyPair } from "@/lib/aptos";
 import { useKeylessAccounts } from "@/lib/core/useKeylessAccounts";
-import { Aptos, AptosConfig, KeylessAccount } from "@aptos-labs/ts-sdk";
-import { Network } from "aptos";
-import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-// import { jwtDecode } from 'jwt-decode';
-
 
 function CallbackPage() {
   const isLoading = useRef(false);
@@ -17,9 +10,7 @@ function CallbackPage() {
   );
   const navigate = useRouter();
   const [idToken, setIdToken] = useState<string | null>(null);
-  const { keylessAcc, setKeylessAcc } = useKeylessAccount();
-  
-  
+
   useEffect(() => {
     // Ensure this code only runs on the client side
     if (typeof window !== "undefined") {
@@ -33,27 +24,7 @@ function CallbackPage() {
 
   useEffect(() => {
     if (isLoading.current || !idToken) return;
-    localStorage.setItem("idToken",idToken);
     isLoading.current = true;
-
-    const payload = jwtDecode<{ nonce: string }>(idToken);
-    const jwtNonce = payload.nonce;
-    const ekp = JSON.parse(localStorage.getItem("ekp")!);
- 
-    // Validate the EphemeralKeyPair
-    // if (!ekp || ekp.nonce !== jwtNonce || ekp.isExpired() ) {
-    //   throw new Error("Ephemeral key pair not found or expired");
-    // }
-
-    // const aptos = new Aptos(new AptosConfig({ network: Network.TESTNET })); // Configure your network here
-    // aptos.deriveKeylessAccount({
-    //     jwt:idToken,
-    //     ephemeralKeyPair,
-    // }).then((res)=>{
-    //     setKeylessAcc(res)
-    // });
-
-
 
     async function deriveAccount(idToken: string) {
       try {
