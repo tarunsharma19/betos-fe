@@ -35,7 +35,7 @@ export default function RootLayout({
             <div className="py-3 px-4 z-10 flex-grow overflow-y-auto">
               {children}
             </div>
-            <div className="h-20 h-[30svh]"></div>
+            <div className="h-20 h-[35svh]"></div>
             <MobileNavigation />
           </div>
         </WalletProvider>
