@@ -251,6 +251,8 @@ const MatchupCard = ({
       amount: Math.floor(amount * 10 ** 8), // replace with actual amount
     };
 
+    
+
     const success = await placeBet(signAndSubmitTransaction, betDetails);
 
     if (success) {

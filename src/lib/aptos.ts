@@ -39,7 +39,6 @@ export const fetchResource = async (accountAddress: string): Promise<any> => {
 };
 
 export const placeBet = async (
-  accountAddress: AccountAddress,
   signAndSubmitTransaction: (transaction: InputTransactionData) => Promise<any>,
   betDetails: {
     address: string;
@@ -54,12 +53,11 @@ export const placeBet = async (
   const transaction: InputTransactionData = {
     data: {
       function: `${moduleAddress}::betos::place_prediction`,
-      functionArguments: [
-        betDetails.address, // address of the target
+      functionArguments: [ // address of the target
         moduleAddress, // module address
-        betDetails.fixtureId, // ID of the fixture
-        betDetails.option, // selected option (home/away/draw, etc.)
-        betDetails.amount, // bet amount
+        "1", // ID of the fixture
+        betDetails.option.toString(), // selected option (home/away/draw, etc.)
+        betDetails.amount.toString(), // bet amount
       ],
     },
   };
