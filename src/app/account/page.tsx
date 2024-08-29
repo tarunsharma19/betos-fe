@@ -43,15 +43,19 @@ function AccountPage() {
   }, [account, activeAccount]);
 
   useEffect(() => {
-    if (!accountAddress || resourceData.length == 0) return;
-    console.log(accountAddress);
-    console.log("resourceData", resourceData[0].value.predictions);
+    if (!accountAddress || resourceData.length === 0) return;
 
-    const filtered = resourceData[0].value.predictions.filter(
-      (bet: any) => bet.user === convertAddress(accountAddress)
+    const fixtureFiltered = resourceData.reduce(
+      (acc: any[], resource: ResourceData) => {
+        const filtered = resource.value.predictions.filter(
+          (bet: any) => bet.user === convertAddress(accountAddress)
+        );
+        return [...acc, ...filtered];
+      },
+      []
     );
 
-    setFilteredBets(filtered);
+    setFilteredBets(fixtureFiltered);
   }, [resourceData, accountAddress]);
 
   const fetchReels = useCallback(async (uniqueIds: string[]) => {
@@ -62,7 +66,7 @@ function AccountPage() {
         "https://data-server-aptos.onrender.com/recent-bets",
         {
           method: "POST",
-          body: JSON.stringify({ fixtureIds: ["1208512"] }),
+          body: JSON.stringify({ fixtureIds: uniqueIds }),
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -75,10 +79,24 @@ function AccountPage() {
     }
   }, []);
 
+  const [combinedBets, setCombinedBets] = useState<any[]>([]);
+
   useEffect(() => {
     if (filteredBets.length > 0) {
       const uniqueIds = getUniqueFixtureIds(filteredBets);
-      fetchReels(uniqueIds);
+      fetchReels(uniqueIds).then((res) => {
+        const betsData = res.data;
+
+        const combined = filteredBets.map((bet) => {
+          const fixtureData = betsData.find((data: any) => {
+            return data.fixture.id.toString() === bet.fixture_id.toString();
+          });
+          return { ...bet, fixtureData: fixtureData || {} };
+        });
+
+        console.log("combined", combined);
+        setCombinedBets(combined);
+      });
     }
   }, [filteredBets, fetchReels]);
 
@@ -116,8 +134,8 @@ function AccountPage() {
           Recent Bets
         </h1>
       </div>
-      {filteredBets.length > 0 ? (
-        <MatchCardsProfile />
+      {combinedBets.length > 0 ? (
+        <MatchCardsProfile combinedData={combinedBets} />
       ) : (
         <p>No recent bets found. Create a new bet to get started!</p>
       )}

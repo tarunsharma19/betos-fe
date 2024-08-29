@@ -8,7 +8,7 @@ import { Card } from "../ui/card";
 import { TeamCard } from "./carousel";
 import Image from "next/image";
 
-export function MatchCardsProfile() {
+export function MatchCardsProfile({ combinedData }: { combinedData: any }) {
   var settings = {
     dots: true,
     infinite: true,
@@ -49,6 +49,8 @@ export function MatchCardsProfile() {
     },
     // Add more matchups here
   ];
+
+  console.log(combinedData);
   return (
     <div className="">
       <Slider {...settings} className="">
