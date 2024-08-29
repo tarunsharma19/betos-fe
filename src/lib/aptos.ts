@@ -8,7 +8,7 @@ import {
 import { InputTransactionData } from "@aptos-labs/wallet-adapter-react";
 
 const APTOS_NETWORK: Network = Network.TESTNET;
-const config = new AptosConfig({ fullnode:"https://aptos-testnet.nodit.io/IjbhJrEHmF9JloQ5sO6E0L5twZWB5ekZ/v1" });
+const config = new AptosConfig({ network: APTOS_NETWORK });
 export const ephemeralKeyPair = EphemeralKeyPair.generate();
 
 export const aptos = new Aptos(config);
