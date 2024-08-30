@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Betos - Bets on Aptos
 
-## Getting Started
+Welcome to **Betos**, a decentralized online betting platform built on the Aptos blockchain. Betos offers a transparent, secure, and fast betting experience on live football matches, with low transaction fees and instant payouts.
 
-First, run the development server:
+## Repositories
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend**: [Betos Frontend](https://github.com/tarunsharma19/betos-fe)  
+  Built with Next.js and TypeScript, this repository contains the frontend code for Betos. It integrates with Aptos blockchain using keyless sign-in and the Aptos-ts SDK.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Smart Contracts**: [Betos Smart Contracts](https://github.com/tarunsharma19/betos-sc)  
+  This repository houses the smart contract code for Betos, along with the deployment scripts for Switchboard oracles through their SDK.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Backend**: [Betos Backend](https://github.com/symaticvisuals/data-server-aptos)  
+  Serving as an external adaptor to our SDK, this repository also provides the necessary data to our frontend, fetching match data, fixtures, and odds from RapidAPI's football API.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Team Members
 
-## Learn More
+- **Tarun Sharma**  
+  Full-Stack Developer / Blockchain Developer  
+  [Email](mailto:sharmatarun1019@gmail.com) | [Twitter](https://twitter.com/tarunsharmaa_)
 
-To learn more about Next.js, take a look at the following resources:
+- **Deepanshu Goel**  
+  Full-Stack Developer  
+  [Email](mailto:symaticvisuals02@gmail.com) | [Twitter](https://twitter.com/thedeepanshuweb)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Problem Statement
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The current online betting platforms are centralized, lack transparency, and often involve complex legal frameworks. Users face issues with trust, delayed payouts, and high fees. Betos aims to solve these problems by providing a decentralized, transparent, and fast betting experience on live football matches using the Aptos blockchain.
 
-## Deploy on Vercel
+## Core Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Decentralized Betting**: Place bets on live football matches directly on the blockchain.
+- **Oracle Integration**: Fetch real-time odds and match outcomes from trusted oracles (Switchboard).
+- **Secure Wallet Integration**: Connect your crypto wallet to place bets and withdraw winnings.
+- **Instant Payouts**: Automated payouts based on smart contract execution without intermediaries.
+- **User-Friendly Interface**: A simple and intuitive design for easy navigation and betting, with a mobile-first approach.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Value Proposition
+
+Betos offers a transparent and decentralized betting platform where users can bet on live football matches with minimal fees. The smart contract-based system ensures secure and instant payouts, while the oracle integration provides real-time and accurate data from over 15 betting platforms like 1xbet, 100bet, etc., enhancing the overall betting experience.
+
+## Development Timeline
+
+- **Day 1-2**:
+  - Smart contract development for market creation, betting, and payout functionalities.
+  - Oracle development.
+  - UX/UI designing, frontend setup, backend API adaptor setup for Oracle.
+  
+- **Day 3-5**:
+  - Frontend development, smart contract integration, backend API integration for fetching live data and odds.
+  
+- **Day 6-7**:
+  - Testing, final adjustments, and preparation for presentation.
+
+## Launch Strategy
+
+- **Hackathon Demo**: Present the MVP with live betting on football matches.
+- **Beta Launch**: Invite users from the hackathon and early adopters for a closed beta with free funds to bet on the platform.
+- **Marketing**: Leverage social media, blockchain communities, and partnerships with sports influencers to promote the platform.
+
+## Links
+
+- **Waitlist Page**: [Betos Waitlist](https://betos-waitlist.vercel.app)
+- **Live Page**: [Betos Online](https://betos.online)
