@@ -2,6 +2,11 @@
 
 Welcome to **Betos**, a decentralized online betting platform built on the Aptos blockchain. Betos offers a transparent, secure, and fast betting experience on live football matches, with low transaction fees and instant payouts.
 
+## Links
+
+- **Waitlist Page**: [Betos Waitlist](https://betos-waitlist.vercel.app)
+- **Live Page**: [Betos Online](https://betos.online)
+
 ## Repositories
 
 - **Frontend**: [Betos Frontend](https://github.com/tarunsharma19/betos-fe)  
@@ -35,6 +40,10 @@ The current online betting platforms are centralized, lack transparency, and oft
 - **Instant Payouts**: Automated payouts based on smart contract execution without intermediaries.
 - **User-Friendly Interface**: A simple and intuitive design for easy navigation and betting, with a mobile-first approach.
 
+## Bounty Integrations
+- **Panora**
+- **Kana Labs**
+
 ## Value Proposition
 
 Betos offers a transparent and decentralized betting platform where users can bet on live football matches with minimal fees. The smart contract-based system ensures secure and instant payouts, while the oracle integration provides real-time and accurate data from over 15 betting platforms like 1xbet, 100bet, etc., enhancing the overall betting experience.
@@ -58,7 +67,3 @@ Betos offers a transparent and decentralized betting platform where users can be
 - **Beta Launch**: Invite users from the hackathon and early adopters for a closed beta with free funds to bet on the platform.
 - **Marketing**: Leverage social media, blockchain communities, and partnerships with sports influencers to promote the platform.
 
-## Links
-
-- **Waitlist Page**: [Betos Waitlist](https://betos-waitlist.vercel.app)
-- **Live Page**: [Betos Online](https://betos.online)
