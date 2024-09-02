@@ -31,6 +31,7 @@ import GoogleLogo from "../logo/Google";
 import { useAptosWallet } from "@/hooks/use-aptos-wallet";
 import { WalletName } from "@aptos-labs/wallet-adapter-react";
 import { usePathname } from "next/navigation";
+import { WalletSelector } from "./wallet-selector";
 
 function MobileNavigation() {
   const { activeAccount } = useKeylessAccounts();
@@ -129,7 +130,7 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
               <p className="text-lg mb-8 text-center">
                 Get started with Betos by connecting your wallet
               </p>
-              {redirectUrl && (
+              {/* {redirectUrl && (
                 <Link
                   href={redirectUrl}
                   className="flex justify-center items-center border px-8 py-2 hover:bg-gray-100 hover:shadow-sm active:bg-gray-50 active:scale-95 transition-all rounded-full"
@@ -137,14 +138,16 @@ export function DrawerDemo({ isLoading }: { isLoading: boolean }) {
                   <GoogleLogo />
                   Sign in with Google
                 </Link>
-              )}
-              <Button
+              )} */}
+              {/* <Button
                 className="w-full rounded-full mt-3"
                 variant="default"
                 onClick={() => handleConnect("Petra" as WalletName<"Petra">)}
               >
                 Connect Aptos Wallet
-              </Button>
+              </Button> */}
+
+              <WalletSelector />
             </div>
           )}
         </div>
